@@ -21,6 +21,7 @@
 - [x] Task 9: Hero typography size reduction (`text-4xl sm:text-6xl md:text-7xl`) and word-wrap grouping (`whitespace-nowrap`) preventing orphaned letter wrap.
 - [x] Task 10: Replaced placeholder identity "Alex Mercer" with "Kartik Sharma" across layout metadata, Hero split-character title, contact details, and footer.
 - [x] Task 11: Updated Hero subtitle introducing Kartik Sharma and passions for modern web development, AI, and interactive digital experiences.
+- [x] Task 12: Updated Hero primary heading to "Kartik Sharma", retained COSMOS navbar brand, and optimized scroll updates with requestAnimationFrame throttling and GPU willChange transforms.
 
 ---
 

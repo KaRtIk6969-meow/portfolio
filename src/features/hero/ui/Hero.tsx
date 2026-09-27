@@ -15,7 +15,7 @@ const techStack = [
 ];
 
 export default function Hero() {
-  const name = "KARTIK SHARMA";
+  const name = "Kartik Sharma";
 
   const handleScrollTo = (id: string) => {
     smoothScrollTo(id, -20);
@@ -63,6 +63,7 @@ export default function Hero() {
                     delay: 0.25 + (wordIndex * 7 + charIndex) * 0.04,
                   }}
                   className="inline-block"
+                  style={{ willChange: "transform, opacity" }}
                 >
                   {char}
                 </motion.span>

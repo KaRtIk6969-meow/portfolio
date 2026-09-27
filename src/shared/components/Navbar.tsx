@@ -17,9 +17,11 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Track active section and scroll state
+  // Track active section and scroll state with RAF throttling for 60fps smoothness
   useEffect(() => {
-    const handleScroll = () => {
+    let ticking = false;
+
+    const updateScroll = () => {
       setScrolled(window.scrollY > 30);
 
       const sections = ["hero", "projects", "skills", "about", "contact"];
@@ -37,10 +39,18 @@ export default function Navbar() {
           break;
         }
       }
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateScroll);
+        ticking = true;
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
+    updateScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
