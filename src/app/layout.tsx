@@ -14,7 +14,7 @@ const firaCode = Fira_Code({
 });
 
 export const metadata: Metadata = {
-  title: "Alex Mercer | Senior Full Stack Developer",
+  title: "Kartik Sharma | Senior Full Stack Developer",
   description: "Futuristic developer portfolio built with Next.js, Framer Motion, and Tailwind CSS, featuring high performance cosmic designs.",
 };
 

@@ -18,6 +18,8 @@
 - [x] Task 6: Refactor `Hero.tsx` with professional status badge, dual CTA hierarchy, typography polish, tech competency strip, and responsive viewport safety
 - [x] Task 7: Update `src/app/page.tsx` (extracted navbar, removed redundant inline header, eliminated disruptive `select-none`, added Back-to-Top footer action)
 - [x] Task 8: Verification, linting (`npm run lint`), TypeScript validation (`npx tsc --noEmit`), and production build (`npm run build`) passed with 0 errors.
+- [x] Task 9: Hero typography size reduction (`text-4xl sm:text-6xl md:text-7xl`) and word-wrap grouping (`whitespace-nowrap`) preventing orphaned letter wrap.
+- [x] Task 10: Replaced placeholder identity "Alex Mercer" with "Kartik Sharma" across layout metadata, Hero split-character title, contact details, and footer.
 
 ---
 

@@ -68,7 +68,7 @@ export default function Contact() {
             <div className="w-9 h-9 rounded-full bg-surface-elevated border border-border-line flex items-center justify-center">
               <Mail className="w-4 h-4 text-secondary" />
             </div>
-            <span>alex.mercer@cosmos.dev</span>
+            <span>kartik.sharma@cosmos.dev</span>
           </div>
         </motion.div>
 

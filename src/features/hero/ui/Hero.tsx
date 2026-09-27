@@ -15,7 +15,7 @@ const techStack = [
 ];
 
 export default function Hero() {
-  const name = "ALEX MERCER";
+  const name = "KARTIK SHARMA";
 
   const handleScrollTo = (id: string) => {
     smoothScrollTo(id, -20);
@@ -48,23 +48,26 @@ export default function Hero() {
           </span>
         </motion.div>
 
-        {/* Cinematic split character title animation */}
-        <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-sans font-black tracking-tight text-white mb-6 leading-none select-text">
-          {name.split("").map((char, index) => (
-            <motion.span
-              key={index}
-              initial={{ opacity: 0, y: 35 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.8,
-                ease: [0.22, 1, 0.36, 1],
-                delay: 0.3 + index * 0.04,
-              }}
-              className="inline-block"
-              style={{ marginRight: char === " " ? "0.3em" : "0px" }}
-            >
-              {char}
-            </motion.span>
+        {/* Cinematic split character title animation with word-wrapping protection */}
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-sans font-black tracking-tight text-white mb-6 leading-tight select-text">
+          {name.split(" ").map((word, wordIndex) => (
+            <span key={wordIndex} className="inline-block whitespace-nowrap mx-1.5 sm:mx-2.5">
+              {word.split("").map((char, charIndex) => (
+                <motion.span
+                  key={charIndex}
+                  initial={{ opacity: 0, y: 25 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.7,
+                    ease: [0.22, 1, 0.36, 1],
+                    delay: 0.25 + (wordIndex * 7 + charIndex) * 0.04,
+                  }}
+                  className="inline-block"
+                >
+                  {char}
+                </motion.span>
+              ))}
+            </span>
           ))}
         </h1>
 

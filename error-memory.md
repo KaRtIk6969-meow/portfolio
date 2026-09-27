@@ -24,3 +24,8 @@ Tracks architectural bugs, performance bottlenecks, root causes, and verified fi
 - **Symptom**: TypeScript build failure with `error TS2304: Cannot find name 'width'` and `'height'`.
 - **Root Cause**: `width` and `height` were re-assigned inside `resizeCanvas()` without declaring them in the outer `useEffect` closure scope.
 - **Verified Fix Pattern**: Declare `let width = 0; let height = 0;` at the top of the canvas hook closure before inner functions.
+
+### Bug 005: Orphaned Last Letter 'R' and Oversized Hero Typography
+- **Symptom**: The final character 'R' in "ALEX MERCER" broke onto a new line centered alone, and the font size was excessively huge (`lg:text-9xl`).
+- **Root Cause**: Characters were split individually as raw `inline-block` spans (`name.split("")`) without word grouping, combined with an oversized font scale that exceeded the container's max width.
+- **Verified Fix Pattern**: Scaled font down to `text-4xl sm:text-6xl md:text-7xl font-black leading-tight`, and nested character animations inside word containers (`name.split(" ")`) with `inline-block whitespace-nowrap` so words never split across lines.
