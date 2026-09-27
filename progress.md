@@ -22,6 +22,7 @@
 - [x] Task 10: Replaced placeholder identity "Alex Mercer" with "Kartik Sharma" across layout metadata, Hero split-character title, contact details, and footer.
 - [x] Task 11: Updated Hero subtitle introducing Kartik Sharma and passions for modern web development, AI, and interactive digital experiences.
 - [x] Task 12: Updated Hero primary heading to "Kartik Sharma", retained COSMOS navbar brand, and optimized scroll updates with requestAnimationFrame throttling and GPU willChange transforms.
+- [x] Task 13: Refined hero introduction copy ("A developer passionate about modern web development, AI, and crafting fluid, interactive digital experiences.") with comfortable line spacing (leading-relaxed sm:leading-loose) and enhanced readable contrast (text-text-primary/80).
 
 ---
 

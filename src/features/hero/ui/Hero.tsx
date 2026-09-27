@@ -72,15 +72,15 @@ export default function Hero() {
           ))}
         </h1>
 
-        {/* Subtitle with optimized readability measure */}
-        <motion.h2
+        {/* Subtitle with refined copy, comfortable line spacing, and enhanced contrast */}
+        <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.9 }}
-          className="text-base sm:text-xl md:text-2xl font-sans text-text-secondary max-w-2xl mx-auto font-light leading-relaxed mb-10 select-text"
+          className="text-base sm:text-xl md:text-2xl font-sans text-text-primary/80 max-w-2xl mx-auto font-normal leading-relaxed sm:leading-loose mb-10 select-text"
         >
-          I&apos;m Kartik Sharma, a developer passionate about modern web development, AI, and crafting fluid, interactive digital experiences.
-        </motion.h2>
+          A developer passionate about modern web development, AI, and crafting fluid, interactive digital experiences.
+        </motion.p>
 
         {/* Dual Call to Action buttons */}
         <motion.div
