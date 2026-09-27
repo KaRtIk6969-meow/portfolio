@@ -36,7 +36,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface-elevated/80 border border-border-line/80 shadow-card mb-6 backdrop-blur-md"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface-elevated/80 border border-border-line/80 shadow-card mb-4 sm:mb-5 backdrop-blur-md"
         >
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-semantic-success opacity-75" />
@@ -49,7 +49,7 @@ export default function Hero() {
         </motion.div>
 
         {/* Cinematic split character title animation with word-wrapping protection */}
-        <h1 className="text-4xl sm:text-6xl md:text-7xl font-sans font-black tracking-tight text-white mb-6 leading-tight select-text">
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-sans font-black tracking-tight text-white mb-4 sm:mb-5 leading-tight select-text">
           {name.split(" ").map((word, wordIndex) => (
             <span key={wordIndex} className="inline-block whitespace-nowrap mx-1.5 sm:mx-2.5">
               {word.split("").map((char, charIndex) => (
@@ -77,7 +77,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.9 }}
-          className="text-base sm:text-xl md:text-2xl font-sans text-text-primary/80 max-w-2xl mx-auto font-normal leading-relaxed sm:leading-loose mb-10 select-text"
+          className="text-base sm:text-lg md:text-xl font-sans text-text-primary/80 max-w-2xl mx-auto font-normal leading-relaxed sm:leading-loose mb-7 sm:mb-8 select-text"
         >
           A developer passionate about modern web development, AI, and crafting fluid, interactive digital experiences.
         </motion.p>
@@ -87,27 +87,27 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.94 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 1.1 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto mb-14"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3.5 w-full sm:w-auto mb-8 sm:mb-10"
         >
           <Button
             variant="primary"
-            size="lg"
+            size="md"
             magnetic
             glow
             onClick={() => handleScrollTo("projects")}
             icon={<ArrowDown className="w-4 h-4" />}
-            className="w-full sm:w-auto"
+            className="w-full sm:w-auto px-7 py-3.5 text-sm font-semibold shadow-glow-violet"
           >
             Explore Projects
           </Button>
 
           <Button
             variant="secondary"
-            size="lg"
+            size="md"
             magnetic
             onClick={() => handleScrollTo("contact")}
             icon={<Send className="w-4 h-4" />}
-            className="w-full sm:w-auto"
+            className="w-full sm:w-auto px-7 py-3.5 text-sm font-semibold"
           >
             Get In Touch
           </Button>
@@ -136,7 +136,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.65 }}
         transition={{ duration: 0.8, delay: 1.5 }}
-        className="mt-14 sm:mt-16 flex flex-col items-center gap-1.5 font-mono text-[10px] text-text-secondary tracking-widest uppercase cursor-pointer hover:text-secondary transition-colors"
+        className="mt-8 sm:mt-10 flex flex-col items-center gap-1.5 font-mono text-[10px] text-text-secondary tracking-widest uppercase cursor-pointer hover:text-secondary transition-colors"
         onClick={() => handleScrollTo("projects")}
         role="button"
         tabIndex={0}
