@@ -24,6 +24,7 @@
 - [x] Task 12: Updated Hero primary heading to "Kartik Sharma", retained COSMOS navbar brand, and optimized scroll updates with requestAnimationFrame throttling and GPU willChange transforms.
 - [x] Task 13: Refined hero introduction copy ("A developer passionate about modern web development, AI, and crafting fluid, interactive digital experiences.") with comfortable line spacing (leading-relaxed sm:leading-loose) and enhanced readable contrast (text-text-primary/80).
 - [x] Task 14: Calibrated Hero vertical rhythm and visual hierarchy (tightened badge-to-heading margin to 16-20px, heading-to-intro to 16-20px, intro-to-CTAs to 28-32px, CTAs-to-tech stack to 32-40px, and scroll cue to 32-40px).
+- [x] Task 15: Enhanced Navbar interactions with subtle hover transitions (surface-hover/50 pill), glowing active-section pill + pulsing cyan node, WCAG-compliant unified focus rings (focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2), mobile backdrop dismiss, and 70px offset scroll landing.
 
 ---
 
