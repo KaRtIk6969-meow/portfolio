@@ -78,7 +78,7 @@ export default function Hero() {
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.9 }}
           className="text-base sm:text-xl md:text-2xl font-sans text-text-secondary max-w-2xl mx-auto font-light leading-relaxed mb-10 select-text"
         >
-          Senior Full Stack Developer building high performance, fluid, and immersive web solutions with pixel perfect layouts.
+          I&apos;m Kartik Sharma, a developer passionate about modern web development, AI, and crafting fluid, interactive digital experiences.
         </motion.h2>
 
         {/* Dual Call to Action buttons */}

@@ -20,6 +20,7 @@
 - [x] Task 8: Verification, linting (`npm run lint`), TypeScript validation (`npx tsc --noEmit`), and production build (`npm run build`) passed with 0 errors.
 - [x] Task 9: Hero typography size reduction (`text-4xl sm:text-6xl md:text-7xl`) and word-wrap grouping (`whitespace-nowrap`) preventing orphaned letter wrap.
 - [x] Task 10: Replaced placeholder identity "Alex Mercer" with "Kartik Sharma" across layout metadata, Hero split-character title, contact details, and footer.
+- [x] Task 11: Updated Hero subtitle introducing Kartik Sharma and passions for modern web development, AI, and interactive digital experiences.
 
 ---
 
