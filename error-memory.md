@@ -29,3 +29,8 @@ Tracks architectural bugs, performance bottlenecks, root causes, and verified fi
 - **Symptom**: The final character 'R' in "ALEX MERCER" broke onto a new line centered alone, and the font size was excessively huge (`lg:text-9xl`).
 - **Root Cause**: Characters were split individually as raw `inline-block` spans (`name.split("")`) without word grouping, combined with an oversized font scale that exceeded the container's max width.
 - **Verified Fix Pattern**: Scaled font down to `text-4xl sm:text-6xl md:text-7xl font-black leading-tight`, and nested character animations inside word containers (`name.split(" ")`) with `inline-block whitespace-nowrap` so words never split across lines.
+
+### Bug 006: Mobile Horizontal Overflow and Timeline Node Clipping
+- **Symptom**: On narrow viewports (320px–375px), horizontal scrollbars appeared on the Skills section, the Contact email address overflowed the card boundary, and the About timeline line/dots clipped against the left viewport edge.
+- **Root Cause**: Skills category tabs lacked horizontal scroll containment (`overflow-x-auto`), long email strings lacked line breaking, and the About timeline margin (`ml-4 sm:ml-12 md:ml-28`) was too narrow for the 48px circle offset.
+- **Verified Fix Pattern**: Added `overflow-x-auto scrollbar-none` with responsive button padding to Skills filter bar, applied `break-all sm:break-normal` to email text, adjusted timeline margin to `ml-6 sm:ml-12 md:ml-28` with `pl-6 sm:pl-8`, and standardized section padding to `py-16 sm:py-24`.

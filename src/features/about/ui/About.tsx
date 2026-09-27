@@ -44,8 +44,8 @@ const timelineData: TimelineItem[] = [
 
 export default function About() {
   return (
-    <section id="about" className="py-24 px-4 max-w-5xl mx-auto w-full min-w-0">
-      <div className="text-center mb-16">
+    <section id="about" className="py-16 sm:py-24 px-4 max-w-5xl mx-auto w-full min-w-0">
+      <div className="text-center mb-10 sm:mb-16">
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -72,7 +72,7 @@ export default function About() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="glass-panel p-8 rounded-2xl mb-16 shadow-lg leading-relaxed text-text-secondary font-sans text-base max-w-3xl mx-auto w-full min-w-0"
+        className="glass-panel p-6 sm:p-8 rounded-2xl mb-12 sm:mb-16 shadow-lg leading-relaxed text-text-secondary font-sans text-sm sm:text-base max-w-3xl mx-auto w-full min-w-0"
       >
         <p className="mb-4">
           I am a passionate software engineer dedicated to building premium, high performance digital solutions. By combining robust backend logic with immersive, smooth frontend animations, I create applications that are both functional and visually stunning.
@@ -82,12 +82,12 @@ export default function About() {
         </p>
       </motion.div>
 
-      {/* Timeline pathway layout */}
-      <div className="relative border-l border-border-line ml-4 md:ml-32 py-4">
+      {/* Timeline pathway layout with mobile clipping protection */}
+      <div className="relative border-l border-border-line ml-6 sm:ml-12 md:ml-28 py-4">
         {timelineData.map((item, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{
@@ -95,7 +95,7 @@ export default function About() {
               ease: [0.16, 1, 0.3, 1],
               delay: index * 0.1,
             }}
-            className="relative pl-8 pb-12 last:pb-0"
+            className="relative pl-6 sm:pl-8 pb-8 sm:pb-12 last:pb-0"
             style={{ willChange: "transform, opacity" }}
           >
             {/* Timeline node icon circles */}
@@ -104,22 +104,22 @@ export default function About() {
             </div>
 
             {/* Content cards block */}
-            <div className="glass-panel p-6 rounded-xl hover:border-secondary/40 transition-all duration-300 shadow-md">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+            <div className="glass-panel p-5 sm:p-6 rounded-xl hover:border-secondary/40 transition-all duration-300 shadow-md">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 mb-2 sm:mb-3">
                 <span className="text-[10px] font-mono tracking-widest text-secondary flex items-center gap-1">
                   <Calendar className="w-3.5 h-3.5" />
                   {item.year}
                 </span>
-                <h4 className="text-sm font-sans font-bold text-white uppercase tracking-wider">
+                <h4 className="text-xs sm:text-sm font-sans font-bold text-white uppercase tracking-wider">
                   {item.company}
                 </h4>
               </div>
               
-              <h3 className="text-lg font-sans font-bold text-white mb-2">
+              <h3 className="text-base sm:text-lg font-sans font-bold text-white mb-2">
                 {item.role}
               </h3>
               
-              <p className="text-sm font-sans text-text-secondary leading-relaxed">
+              <p className="text-xs sm:text-sm font-sans text-text-secondary leading-relaxed">
                 {item.description}
               </p>
             </div>

@@ -26,8 +26,8 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 px-4 max-w-4xl mx-auto w-full min-w-0">
-      <div className="text-center mb-16">
+    <section id="contact" className="py-16 sm:py-24 px-4 max-w-4xl mx-auto w-full min-w-0">
+      <div className="text-center mb-10 sm:mb-16">
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -48,27 +48,27 @@ export default function Contact() {
         </motion.h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-8 items-start w-full min-w-0">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-6 sm:gap-8 items-start w-full min-w-0">
         {/* Contact info panel */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="md:col-span-2 glass-panel p-6 rounded-2xl w-full min-w-0"
+          className="md:col-span-2 glass-panel p-5 sm:p-6 rounded-2xl w-full min-w-0"
         >
-          <h3 className="text-lg font-sans font-bold text-white mb-4">
+          <h3 className="text-lg font-sans font-bold text-white mb-3 sm:mb-4">
             Connection Hub
           </h3>
           <p className="text-sm font-sans text-text-secondary leading-relaxed mb-6">
             Feel free to reach out if you want to collaborate on open source projects, discuss full stack engineering opportunities, or simply say hello.
           </p>
 
-          <div className="flex items-center gap-3 text-sm font-mono text-white">
-            <div className="w-9 h-9 rounded-full bg-surface-elevated border border-border-line flex items-center justify-center">
+          <div className="flex items-center gap-3 text-xs sm:text-sm font-mono text-white">
+            <div className="w-9 h-9 shrink-0 rounded-full bg-surface-elevated border border-border-line flex items-center justify-center">
               <Mail className="w-4 h-4 text-secondary" />
             </div>
-            <span>kartik.sharma@cosmos.dev</span>
+            <span className="break-all sm:break-normal">kartik.sharma@cosmos.dev</span>
           </div>
         </motion.div>
 
@@ -78,7 +78,7 @@ export default function Contact() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="md:col-span-3 glass-panel p-8 rounded-2xl w-full min-w-0"
+          className="md:col-span-3 glass-panel p-5 sm:p-8 rounded-2xl w-full min-w-0"
         >
           <AnimatePresence mode="wait">
             {status !== "success" ? (
@@ -87,7 +87,7 @@ export default function Contact() {
                 onSubmit={handleSubmit}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3 }}
-                className="space-y-6 w-full min-w-0"
+                className="space-y-5 sm:space-y-6 w-full min-w-0"
               >
                 <div>
                   <label htmlFor="name" className="block text-[11px] font-mono text-text-secondary uppercase tracking-widest mb-2">
@@ -100,7 +100,7 @@ export default function Contact() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     disabled={status === "submitting"}
-                    className="w-full bg-surface-main border border-border-line rounded-xl px-4 py-3 text-sm font-sans text-white focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all duration-300 disabled:opacity-50"
+                    className="w-full bg-surface-main border border-border-line rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-sm font-sans text-white focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all duration-300 disabled:opacity-50"
                   />
                 </div>
 
@@ -115,7 +115,7 @@ export default function Contact() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={status === "submitting"}
-                    className="w-full bg-surface-main border border-border-line rounded-xl px-4 py-3 text-sm font-sans text-white focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all duration-300 disabled:opacity-50"
+                    className="w-full bg-surface-main border border-border-line rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-sm font-sans text-white focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all duration-300 disabled:opacity-50"
                   />
                 </div>
 
@@ -130,14 +130,14 @@ export default function Contact() {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     disabled={status === "submitting"}
-                    className="w-full bg-surface-main border border-border-line rounded-xl px-4 py-3 text-sm font-sans text-white focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all duration-300 disabled:opacity-50 resize-none"
+                    className="w-full bg-surface-main border border-border-line rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-sm font-sans text-white focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all duration-300 disabled:opacity-50 resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={status === "submitting"}
-                  className="w-full flex items-center justify-center gap-2 py-4 bg-primary text-white rounded-xl font-sans font-bold text-sm tracking-wide shadow-lg cursor-pointer transition-all duration-300 hover:bg-opacity-90 disabled:opacity-50"
+                  className="w-full flex items-center justify-center gap-2 py-3.5 sm:py-4 bg-primary hover:bg-primary-hover active:scale-[0.98] text-white rounded-xl font-sans font-bold text-sm tracking-wide shadow-glow-violet cursor-pointer transition-all duration-300 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-main"
                 >
                   {status === "submitting" ? (
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -155,19 +155,19 @@ export default function Contact() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="text-center py-8 w-full min-w-0"
+                className="text-center py-6 sm:py-8 w-full min-w-0"
               >
                 <div className="flex justify-center mb-6">
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 200, damping: 15 }}
-                    className="w-16 h-16 rounded-full bg-surface-elevated border border-secondary flex items-center justify-center shadow-lg"
+                    className="w-14 sm:w-16 h-14 sm:h-16 rounded-full bg-surface-elevated border border-secondary flex items-center justify-center shadow-lg"
                   >
-                    <CheckCircle2 className="w-8 h-8 text-secondary" />
+                    <CheckCircle2 className="w-7 sm:w-8 h-7 sm:h-8 text-secondary" />
                   </motion.div>
                 </div>
-                <h3 className="text-2xl font-sans font-bold text-white mb-2">
+                <h3 className="text-xl sm:text-2xl font-sans font-bold text-white mb-2">
                   Transmission Received
                 </h3>
                 <p className="text-sm font-sans text-text-secondary max-w-md mx-auto leading-relaxed mb-6">
@@ -175,7 +175,7 @@ export default function Contact() {
                 </p>
                 <button
                   onClick={() => setStatus("idle")}
-                  className="px-6 py-2.5 bg-surface-elevated text-secondary border border-border-line rounded-full font-mono text-xs cursor-pointer hover:border-secondary hover:text-white transition-all duration-300"
+                  className="px-6 py-2.5 bg-surface-elevated text-secondary border border-border-line hover:border-secondary hover:text-white rounded-full font-mono text-xs cursor-pointer transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
                 >
                   Send Another
                 </button>

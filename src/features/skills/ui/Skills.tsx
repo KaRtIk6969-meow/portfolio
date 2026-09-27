@@ -51,8 +51,8 @@ export default function Skills() {
   const [activeCategory, setActiveCategory] = useState<Categories>("frontend");
 
   return (
-    <section id="skills" className="py-24 px-4 max-w-7xl mx-auto w-full min-w-0">
-      <div className="text-center mb-16">
+    <section id="skills" className="py-16 sm:py-24 px-4 max-w-7xl mx-auto w-full min-w-0">
+      <div className="text-center mb-10 sm:mb-16">
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -73,16 +73,16 @@ export default function Skills() {
         </motion.h2>
       </div>
 
-      {/* Tabs controllers for active categories */}
-      <div className="flex justify-center gap-4 mb-12">
-        <div className="flex bg-surface-elevated border border-border-line rounded-full p-1.5 shadow-inner">
+      {/* Tabs controllers for active categories with responsive overflow protection */}
+      <div className="flex justify-center mb-8 sm:mb-12 w-full overflow-x-auto py-1 scrollbar-none">
+        <div className="inline-flex max-w-full bg-surface-elevated/90 border border-border-line rounded-full p-1 sm:p-1.5 shadow-inner">
           {categoryTabs.map((tab) => {
             const isActive = activeCategory === tab.id;
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveCategory(tab.id)}
-                className={`relative flex items-center gap-2 px-5 py-2.5 rounded-full font-sans text-xs sm:text-sm font-semibold tracking-wide cursor-pointer transition-all duration-300 ${
+                className={`relative flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full font-sans text-xs sm:text-sm font-semibold tracking-wide cursor-pointer transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary ${
                   isActive ? "text-white" : "text-text-secondary hover:text-white"
                 }`}
               >
@@ -110,7 +110,7 @@ export default function Skills() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full min-w-0"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 w-full min-w-0"
           >
             {skillsData[activeCategory].map((skill, index) => (
               <motion.div
@@ -122,7 +122,7 @@ export default function Skills() {
                   ease: [0.16, 1, 0.3, 1],
                   delay: index * 0.05,
                 }}
-                className="group relative flex flex-col p-5 glass-panel rounded-xl glow-hover shadow-md hover:scale-105 cursor-default transition-all w-full min-w-0"
+                className="group relative flex flex-col p-4 sm:p-5 glass-panel rounded-xl glow-hover shadow-md hover:scale-[1.03] cursor-default transition-all w-full min-w-0"
                 style={{ willChange: "transform, opacity, box-shadow, border-color" }}
               >
                 <div className="flex justify-between items-start mb-4">
