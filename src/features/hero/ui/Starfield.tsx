@@ -21,14 +21,30 @@ export default function Starfield() {
     if (!ctx) return;
 
     let animationFrameId: number;
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+    let isVisible = true;
+    let width = 0;
+    let height = 0;
+
+    // Handle high DPI screens smoothly capped at 2x
+    const dpr = Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, 2);
+
+    const resizeCanvas = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.scale(dpr, dpr);
+    };
+
+    resizeCanvas();
 
     // Cosmic design token color options
-    const starColors = ["#8B5CF6", "#06B6D4", "#F3F4F6", "#3B82F6", "#a78bfa"];
+    const starColors = ["#8B5CF6", "#06B6D4", "#F3F4F6", "#A78BFA", "#38BDF8"];
 
     // Populate particles star arrays
-    const starCount = 150;
+    const starCount = 140;
     const stars: Star[] = [];
 
     for (let i = 0; i < starCount; i++) {
@@ -36,7 +52,7 @@ export default function Starfield() {
         x: Math.random() * width - width / 2,
         y: Math.random() * height - height / 2,
         z: Math.random() * width,
-        size: Math.random() * 1.5 + 0.5,
+        size: Math.random() * 1.4 + 0.6,
         color: starColors[Math.floor(Math.random() * starColors.length)],
       });
     }
@@ -47,31 +63,41 @@ export default function Starfield() {
     let targetMouseY = 0;
 
     const handleMouseMove = (event: MouseEvent) => {
-      targetMouseX = (event.clientX - width / 2) * 0.08;
-      targetMouseY = (event.clientY - height / 2) * 0.08;
+      targetMouseX = (event.clientX - width / 2) * 0.06;
+      targetMouseY = (event.clientY - height / 2) * 0.06;
     };
 
     const handleResize = () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      resizeCanvas();
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("resize", handleResize);
+    const handleVisibilityChange = () => {
+      isVisible = !document.hidden;
+    };
 
-    const speed = 0.5;
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("resize", handleResize, { passive: true });
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    const speed = 0.45;
 
     const animate = () => {
-      // Clear canvas with opacity trail effect
-      ctx.fillStyle = "rgba(3, 7, 18, 0.2)";
+      if (!isVisible) {
+        animationFrameId = requestAnimationFrame(animate);
+        return;
+      }
+
+      // Smooth canvas trail clear with cosmic void background
+      ctx.fillStyle = "rgba(3, 7, 18, 0.22)";
       ctx.fillRect(0, 0, width, height);
 
       // Smooth mouse coordinates tracking with damping
-      mouseX += (targetMouseX - mouseX) * 0.05;
-      mouseY += (targetMouseY - mouseY) * 0.05;
+      mouseX += (targetMouseX - mouseX) * 0.04;
+      mouseY += (targetMouseY - mouseY) * 0.04;
 
-      stars.forEach((star) => {
-        // Star movement in z depth coordinate
+      for (let i = 0; i < stars.length; i++) {
+        const star = stars[i];
         star.z -= speed;
 
         if (star.z <= 0) {
@@ -80,28 +106,32 @@ export default function Starfield() {
           star.y = Math.random() * height - height / 2;
         }
 
-        // Transform coordinates with 3D projection factors
+        // 3D perspective projection factor
         const k = 128.0 / star.z;
         const px = star.x * k + width / 2 + mouseX;
         const py = star.y * k + height / 2 + mouseY;
 
         if (px >= 0 && px <= width && py >= 0 && py <= height) {
-          const projectedSize = star.size * k;
+          const projectedSize = Math.min(star.size * k, 3.2);
+
+          // Layered celestial glow without GPU-killing shadowBlur
+          // Outer halo (celestial ambient glow)
           ctx.beginPath();
-          ctx.arc(px, py, Math.min(projectedSize, 3), 0, Math.PI * 2);
+          ctx.arc(px, py, projectedSize * 1.8, 0, Math.PI * 2);
           ctx.fillStyle = star.color;
+          ctx.globalAlpha = 0.18;
+          ctx.fill();
 
-          // Glowing shadow properties for celestial effect
-          ctx.shadowBlur = 8;
-          ctx.shadowColor = star.color;
-
+          // Bright star core
+          ctx.beginPath();
+          ctx.arc(px, py, projectedSize, 0, Math.PI * 2);
+          ctx.fillStyle = star.color;
+          ctx.globalAlpha = 0.9;
           ctx.fill();
         }
-      });
+      }
 
-      // Reset shadow configs to prevent leakage
-      ctx.shadowBlur = 0;
-
+      ctx.globalAlpha = 1.0;
       animationFrameId = requestAnimationFrame(animate);
     };
 
@@ -110,6 +140,7 @@ export default function Starfield() {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", handleResize);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);

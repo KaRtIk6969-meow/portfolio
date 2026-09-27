@@ -44,7 +44,7 @@ const timelineData: TimelineItem[] = [
 
 export default function About() {
   return (
-    <section id="about" className="py-24 px-4 max-w-5xl mx-auto w-full min-w-0 select-none">
+    <section id="about" className="py-24 px-4 max-w-5xl mx-auto w-full min-w-0">
       <div className="text-center mb-16">
         <motion.p
           initial={{ opacity: 0 }}

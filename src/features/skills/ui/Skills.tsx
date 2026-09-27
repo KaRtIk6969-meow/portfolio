@@ -51,7 +51,7 @@ export default function Skills() {
   const [activeCategory, setActiveCategory] = useState<Categories>("frontend");
 
   return (
-    <section id="skills" className="py-24 px-4 max-w-7xl mx-auto w-full min-w-0 select-none">
+    <section id="skills" className="py-24 px-4 max-w-7xl mx-auto w-full min-w-0">
       <div className="text-center mb-16">
         <motion.p
           initial={{ opacity: 0 }}

@@ -49,7 +49,7 @@ const projectsList: Project[] = [
 
 export default function Projects() {
   return (
-    <section id="projects" className="py-24 px-4 max-w-7xl mx-auto w-full min-w-0 select-none">
+    <section id="projects" className="py-24 px-4 max-w-7xl mx-auto w-full min-w-0">
       <div className="text-center mb-16">
         <motion.p
           initial={{ opacity: 0 }}

@@ -18,6 +18,9 @@ export default function LenisProvider({ children }: { children: ReactNode }) {
     });
 
     lenisRef.current = lenis;
+    if (typeof window !== "undefined") {
+      (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
+    }
 
     let animationFrameId: number;
     
@@ -30,6 +33,9 @@ export default function LenisProvider({ children }: { children: ReactNode }) {
 
     // Sync scroll-driven effects on frame tick if needed
     return () => {
+      if (typeof window !== "undefined") {
+        (window as unknown as { __lenis?: Lenis }).__lenis = undefined;
+      }
       // Clean up listeners and destroy instance
       lenis.destroy();
       cancelAnimationFrame(animationFrameId);
