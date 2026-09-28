@@ -8,7 +8,7 @@ import ContactForm from "./ContactForm";
 
 export default function Contact() {
   return (
-    <section id="contact" className="py-16 sm:py-24 px-4 max-w-4xl mx-auto w-full min-w-0">
+    <section id="contact" className="section-containment py-16 sm:py-24 px-4 max-w-4xl mx-auto w-full min-w-0">
       {/* Section Header */}
       <div className="text-center mb-10 sm:mb-16">
         <motion.p

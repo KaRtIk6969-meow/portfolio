@@ -34,3 +34,19 @@ Tracks architectural bugs, performance bottlenecks, root causes, and verified fi
 - **Symptom**: On narrow viewports (320px–375px), horizontal scrollbars appeared on the Skills section, the Contact email address overflowed the card boundary, and the About timeline line/dots clipped against the left viewport edge.
 - **Root Cause**: Skills category tabs lacked horizontal scroll containment (`overflow-x-auto`), long email strings lacked line breaking, and the About timeline margin (`ml-4 sm:ml-12 md:ml-28`) was too narrow for the 48px circle offset.
 - **Verified Fix Pattern**: Added `overflow-x-auto scrollbar-none` with responsive button padding to Skills filter bar, applied `break-all sm:break-normal` to email text, adjusted timeline margin to `ml-6 sm:ml-12 md:ml-28` with `pl-6 sm:pl-8`, and standardized section padding to `py-16 sm:py-24`.
+
+### Bug 007: Scroll Stutter and GPU Compositing Overhead from Layout Thrashing and Nested Backdrop Filters
+- **Symptom**: Scrolling jitter, micro-stutter, and elevated GPU/CPU usage during fast user scrolling and mouse movement.
+- **Root Cause**:
+  1. `Navbar.tsx` polled `element.offsetTop` and `scrollHeight` across 5 section elements every scroll tick, causing forced synchronous layout reflows on the browser main thread.
+  2. Nested `backdrop-filter: blur(16px)` on card parents combined with `backdrop-blur-md` on inner chips forced continuous multi-pass rasterization on top of the 60fps moving background canvas.
+  3. `Starfield.tsx` continued requesting `requestAnimationFrame` when the document was hidden, and mousemove listeners computed math on high-frequency raw events (up to 1000Hz).
+  4. Hero scroll cue used an infinite JavaScript Framer Motion loop instead of an off-thread compositor animation.
+  5. Interactive cards used broad `transition-all` which triggered style recomputations on hover.
+- **Verified Fix Pattern**:
+  1. Replaced `Navbar.tsx` scroll-spy with zero-reflow `IntersectionObserver` (`rootMargin: "-15% 0px -40% 0px"`) and passive boolean scroll check.
+  2. Calibrated `.glass-panel` to `blur(12px)` and opacity `0.82`, removed nested backdrop filters from inner chips, and added `content-visibility: auto` (`contain-intrinsic-size: auto 600px`) to offscreen sections.
+  3. Paused `Starfield` RAF loop completely when `document.hidden`, decoupled mousemove ingestion to 1 read per frame, and added `transform-gpu` with `contain: strict`.
+  4. Offloaded Hero scroll bounce to GPU compositor via pure CSS `@keyframes bounce-subtle`.
+  5. Swapped `transition-all` with targeted `transition-[transform,box-shadow,border-color]` on interactive cards.
+

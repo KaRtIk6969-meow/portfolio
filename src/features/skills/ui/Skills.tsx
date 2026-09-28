@@ -10,7 +10,7 @@ export default function Skills() {
   const [activeCategory, setActiveCategory] = useState<SkillCategory>("frontend");
 
   return (
-    <section id="skills" className="py-16 sm:py-24 px-4 max-w-7xl mx-auto w-full min-w-0">
+    <section id="skills" className="section-containment py-16 sm:py-24 px-4 max-w-7xl mx-auto w-full min-w-0">
       {/* Section Header */}
       <div className="text-center mb-10 sm:mb-16">
         <motion.p

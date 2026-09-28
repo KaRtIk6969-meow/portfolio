@@ -7,7 +7,7 @@ import TimelineNode from "./TimelineNode";
 
 export default function About() {
   return (
-    <section id="about" className="py-16 sm:py-24 px-4 max-w-5xl mx-auto w-full min-w-0">
+    <section id="about" className="section-containment py-16 sm:py-24 px-4 max-w-5xl mx-auto w-full min-w-0">
       {/* Section Header */}
       <div className="text-center mb-10 sm:mb-16">
         <motion.p

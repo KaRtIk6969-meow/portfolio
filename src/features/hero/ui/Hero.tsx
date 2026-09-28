@@ -140,12 +140,9 @@ export default function Hero() {
         aria-label="Scroll to projects"
       >
         <span>Scroll</span>
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-        >
+        <div className="animate-bounce-subtle">
           <ArrowDown className="w-3.5 h-3.5 text-secondary" />
-        </motion.div>
+        </div>
       </motion.div>
     </section>
   );

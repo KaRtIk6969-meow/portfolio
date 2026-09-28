@@ -17,63 +17,63 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Track active section and scroll state with state deduplication and RAF throttling
+  // Active section tracking with zero-reflow IntersectionObserver
   useEffect(() => {
-    let ticking = false;
+    const sectionIds = ["hero", "projects", "skills", "about", "contact"];
+    const elements = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
 
-    const updateScroll = () => {
-      const isScrolled = window.scrollY > 25;
-      setScrolled((prev) => (prev !== isScrolled ? isScrolled : prev));
+    if (elements.length === 0) return;
 
-      const sections = ["hero", "projects", "skills", "about", "contact"];
-      const scrollPosition = window.scrollY + 220;
-      const isBottom =
-        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 80;
-
-      let nextSection = "hero";
-      if (isBottom) {
-        nextSection = "contact";
-      } else if (window.scrollY >= 260) {
-        for (let i = sections.length - 1; i >= 0; i--) {
-          const id = sections[i];
-          const element = document.getElementById(id);
-          if (element && element.offsetTop <= scrollPosition) {
-            nextSection = id;
-            break;
-          }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntries = entries.filter((e) => e.isIntersecting);
+        if (visibleEntries.length > 0) {
+          visibleEntries.sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+          setActiveSection(visibleEntries[0].target.id);
         }
+      },
+      {
+        rootMargin: "-15% 0px -40% 0px",
+        threshold: [0, 0.2, 0.5, 0.8],
       }
+    );
 
-      setActiveSection((prev) => (prev !== nextSection ? nextSection : prev));
-      ticking = false;
-    };
+    elements.forEach((el) => observer.observe(el));
 
+    // Passive scroll check solely for background glass pill toggle
+    let ticking = false;
     const handleScroll = () => {
       if (!ticking) {
-        requestAnimationFrame(updateScroll);
+        requestAnimationFrame(() => {
+          const isScrolled = window.scrollY > 25;
+          setScrolled((prev) => (prev !== isScrolled ? isScrolled : prev));
+          ticking = false;
+        });
         ticking = true;
       }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    updateScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   // Close mobile drawer on desktop resize or Escape key press
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
-        setIsMobileMenuOpen(false);
-      }
+      if (window.innerWidth >= 768) setIsMobileMenuOpen(false);
     };
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setIsMobileMenuOpen(false);
-      }
+      if (e.key === "Escape") setIsMobileMenuOpen(false);
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize, { passive: true });
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -86,16 +86,12 @@ export default function Navbar() {
     if (id === "hero") {
       smoothScrollTo("hero", 0);
     } else {
-      // 70px offset leaves comfortable breathing space below the floating header
-      setTimeout(() => {
-        smoothScrollTo(id, -70);
-      }, 50);
+      setTimeout(() => smoothScrollTo(id, -70), 50);
     }
   }, []);
 
   return (
     <>
-      {/* Floating navigation pill header */}
       <motion.header
         initial={{ opacity: 0, y: -24 }}
         animate={{ opacity: 1, y: 0 }}
@@ -109,10 +105,10 @@ export default function Navbar() {
               : "bg-surface-elevated/70 backdrop-blur-lg border-border-line/60"
           }`}
         >
-          {/* Logo brand with active pulse node */}
+          {/* Logo brand */}
           <button
             onClick={() => handleNavClick("hero")}
-            className="flex items-center gap-2.5 cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-main rounded-full py-1.5 px-2.5 -ml-1 transition-all duration-200"
+            className="flex items-center gap-2.5 cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-main rounded-full py-1.5 px-2.5 -ml-1 transition-colors duration-200"
             aria-label="Back to top"
           >
             <div className="relative flex items-center justify-center w-6 h-6 rounded-full bg-surface-main border border-border-line group-hover:border-secondary/80 group-hover:shadow-[0_0_10px_rgba(6,182,212,0.3)] transition-all duration-300">
@@ -131,7 +127,7 @@ export default function Navbar() {
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`relative px-3.5 py-1.5 rounded-full transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-main ${
+                  className={`relative px-3.5 py-1.5 rounded-full transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-main ${
                     isActive
                       ? "text-text-primary font-semibold"
                       : "text-text-secondary hover:text-text-primary hover:bg-surface-hover/50"
@@ -156,15 +152,13 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Right quick action + mobile toggle */}
+          {/* Right action & mobile toggle */}
           <div className="flex items-center gap-2 sm:gap-2.5">
-            {/* Status pill on tablet & desktop */}
             <div className="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-main/80 border border-border-line text-[10px] font-mono text-text-secondary">
               <span className="w-1.5 h-1.5 rounded-full bg-semantic-success animate-pulse" />
               <span className="tracking-wide">AVAILABLE</span>
             </div>
 
-            {/* Quick Contact CTA */}
             <button
               onClick={() => handleNavClick("contact")}
               className="hidden sm:inline-flex items-center gap-1 px-4 py-1.5 bg-primary/20 hover:bg-primary text-secondary hover:text-white border border-secondary/40 hover:border-transparent rounded-full text-xs font-mono font-medium transition-all duration-300 cursor-pointer shadow-sm hover:shadow-glow-violet hover:scale-[1.03] active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-main"
@@ -173,10 +167,9 @@ export default function Navbar() {
               <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
             </button>
 
-            {/* Mobile Hamburger Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden flex items-center justify-center w-9 h-9 rounded-full bg-surface-main/80 border border-border-line text-text-secondary hover:text-text-primary hover:border-secondary transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-main active:scale-95"
+              className="md:hidden flex items-center justify-center w-9 h-9 rounded-full bg-surface-main/80 border border-border-line text-text-secondary hover:text-text-primary hover:border-secondary transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary active:scale-95"
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={isMobileMenuOpen}
             >
@@ -186,11 +179,10 @@ export default function Navbar() {
         </div>
       </motion.header>
 
-      {/* Mobile Drawer Backdrop & Menu */}
+      {/* Mobile Drawer */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            {/* Backdrop overlay to dismiss on click outside */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -201,7 +193,6 @@ export default function Navbar() {
               aria-hidden="true"
             />
 
-            {/* Slide-down mobile drawer */}
             <motion.div
               initial={{ opacity: 0, y: -16, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -230,7 +221,7 @@ export default function Navbar() {
                     <button
                       key={item.id}
                       onClick={() => handleNavClick(item.id)}
-                      className={`flex items-center justify-between w-full px-4 py-3 rounded-xl font-mono text-xs tracking-wider text-left transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary ${
+                      className={`flex items-center justify-between w-full px-4 py-3 rounded-xl font-mono text-xs tracking-wider text-left transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary ${
                         isActive
                           ? "bg-primary/20 text-white border border-secondary/40 font-bold shadow-[0_0_12px_rgba(6,182,212,0.15)]"
                           : "text-text-secondary hover:text-white hover:bg-surface-hover/70"

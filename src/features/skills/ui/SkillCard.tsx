@@ -32,7 +32,7 @@ export default function SkillCard({ skill, index, category }: SkillCardProps) {
         ease: [0.16, 1, 0.3, 1],
         delay: index * 0.04,
       }}
-      className={`group relative flex flex-col p-4 sm:p-5 glass-panel rounded-xl glow-hover shadow-md hover:scale-[1.02] cursor-default transition-all duration-300 w-full min-w-0 ${categoryGlow[category]}`}
+      className={`group relative flex flex-col p-4 sm:p-5 glass-panel rounded-xl glow-hover shadow-md hover:scale-[1.02] cursor-default transition-[transform,box-shadow,border-color] duration-300 w-full min-w-0 ${categoryGlow[category]}`}
     >
       {/* Header: Skill Name & Level Badge */}
       <div className="flex justify-between items-start gap-2 mb-2">

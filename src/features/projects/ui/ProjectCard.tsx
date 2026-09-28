@@ -43,7 +43,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         ease: [0.16, 1, 0.3, 1],
         delay: index * 0.1,
       }}
-      className={`group relative flex flex-col h-full glass-panel rounded-2xl overflow-hidden glow-hover w-full min-w-0 transition-all duration-500 hover:-translate-y-1.5 ${glowShadow}`}
+      className={`group relative flex flex-col h-full glass-panel rounded-2xl overflow-hidden glow-hover w-full min-w-0 transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1.5 ${glowShadow}`}
     >
       {/* Background geometric grid layout header banner */}
       <div className={`h-44 sm:h-48 ${bannerGradient} relative flex items-center justify-center border-b border-border-line overflow-hidden`}>
@@ -56,7 +56,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         {/* Top-Left: Engineering Metric telemetry chip */}
         {metric && (
           <div className="absolute top-3.5 left-3.5 z-20">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono tracking-wider border border-border-line/90 bg-surface-main/80 text-text-secondary backdrop-blur-md shadow-sm">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono tracking-wider border border-border-line/90 bg-surface-main/90 text-text-secondary shadow-sm">
               <Zap className="w-3 h-3 text-secondary animate-pulse" />
               <span className="text-text-primary font-semibold">{metric.value}</span>
             </span>
@@ -66,7 +66,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         {/* Top-Right: Status Badge configured via data */}
         {status && (
           <div className="absolute top-3.5 right-3.5 z-20">
-            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono tracking-wider border backdrop-blur-md shadow-sm ${badgeClass}`}>
+            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono tracking-wider border bg-surface-main/90 shadow-sm ${badgeClass}`}>
               <span className="w-1.5 h-1.5 rounded-full bg-current animate-ping" />
               {status.label}
             </span>
@@ -74,13 +74,13 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         )}
 
         {/* Outer Planetary ring decoration */}
-        <div className={`absolute w-72 h-72 border rounded-full rotate-12 scale-y-50 group-hover:rotate-45 group-hover:scale-y-75 group-hover:scale-105 transition-all duration-700 ease-out pointer-events-none ${ringBorder}`} />
+        <div className={`absolute w-72 h-72 border rounded-full rotate-12 scale-y-50 group-hover:rotate-45 group-hover:scale-y-75 group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none ${ringBorder}`} />
 
         {/* Inner concentric ring decoration */}
-        <div className={`absolute w-48 h-48 border border-dashed rounded-full -rotate-6 scale-y-60 opacity-30 group-hover:rotate-12 transition-all duration-700 ease-out pointer-events-none ${ringBorder}`} />
+        <div className={`absolute w-48 h-48 border border-dashed rounded-full -rotate-6 scale-y-60 opacity-30 group-hover:rotate-12 transition-transform duration-700 ease-out pointer-events-none ${ringBorder}`} />
 
         {/* Central Icon Pod */}
-        <div className={`w-14 h-14 rounded-full bg-surface-main/90 border border-border-line flex items-center justify-center shadow-lg group-hover:scale-110 ${iconBorderHover} transition-all duration-500 z-10 backdrop-blur-md`}>
+        <div className={`w-14 h-14 rounded-full bg-surface-main/90 border border-border-line flex items-center justify-center shadow-lg group-hover:scale-110 ${iconBorderHover} transition-[transform,border-color,box-shadow] duration-300 z-10`}>
           {project.icon}
         </div>
       </div>

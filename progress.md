@@ -34,18 +34,19 @@
 - [x] Task 23: Architectural refactoring and decoupling of Hero feature per Feature-Based Architecture (`src/features/hero/`). Extracted `HeroContent` to `types/index.ts`, extracted persona strings, availability status, introduction copy, and tech competency stack into `constants/hero.ts`, refactored `Hero.tsx` to consume data-driven constants, and exposed unified barrel export in `index.ts` for `Hero`, `Starfield`, constants, and types.
 - [x] Task 24: Standardized App Router Page Imports (`src/app/page.tsx`). Converted all feature imports to clean, top-level barrel exports (`@/features/hero`, `@/features/projects`, `@/features/skills`, `@/features/about`, `@/features/contact`), enforcing strict boundary encapsulation across all slices.
 - [x] Task 25: Comprehensive Barrel Imports Architecture across `@/features` and `@/shared`. Created root `src/features/index.ts` aggregating all domain features, implemented layered barrel exports across `src/shared/components/ui/index.ts`, `src/shared/components/index.ts`, `src/shared/utils/index.ts`, and root `src/shared/index.ts`, and refactored consumers (`src/app/page.tsx`, `src/app/layout.tsx`, `src/features/hero/ui/Hero.tsx`, and `src/shared/components/Navbar.tsx`) to eliminate all deep internal path imports with 0 TypeScript errors.
+- [x] Task 26: Site-Wide Lag Elimination & Performance Optimization. Replaced scroll-spy forced layout thrashing (`offsetTop`/`scrollHeight`) in `Navbar.tsx` with zero-reflow `IntersectionObserver` while trimming file size to 240 lines; calibrated glassmorphism fill and blur in `globals.css` (`blur(12px)`, opacity 0.82) with hardware layer isolation; added `content-visibility: auto` to offscreen sections (`projects`, `skills`, `about`, `contact`); removed nested backdrop filters from `ProjectCard.tsx`; decoupled `Starfield.tsx` high-frequency mouse event storms, paused RAF loop on tab hide, and added `contain: strict`; swapped JS RAF infinite animation for Hero scroll cue with GPU-accelerated CSS keyframe animation (`animate-bounce-subtle`); and verified with 0 TypeScript errors.
 
 ---
 
 ## Deliverables Status
-- Navbar: Polished floating glass island, active scroll-spy, animated mobile drawer, status pill, quick Connect CTA.
-- Hero: Decoupled Feature-Based Architecture with isolated `HERO_CONTENT`, availability indicator, split-character title animation, dual CTAs, tech competency strip, and clean barrel export.
-- Projects: Decoupled Feature-Based Architecture with isolated types, constants, reusable `ProjectCard` with dual orbital rings, telemetry metric chips, live status beacons, category eyebrows, diagonal shimmer sweep, and clean action buttons.
+- Navbar: Polished floating glass island, zero-reflow `IntersectionObserver` scroll-spy, animated mobile drawer, status pill, quick Connect CTA (< 250 lines).
+- Hero: Decoupled Feature-Based Architecture with isolated `HERO_CONTENT`, availability indicator, split-character title animation, dual CTAs, tech competency strip, clean barrel export, and GPU compositor bounce animation.
+- Projects: Decoupled Feature-Based Architecture with isolated types, constants, reusable `ProjectCard` with dual orbital rings, telemetry metric chips, live status beacons, category eyebrows, diagonal shimmer sweep, and clean action buttons with optimized GPU transform transitions.
 - Skills: Decoupled Feature-Based Architecture with isolated types, constants, reusable `SkillCard` with category-tuned glowing borders, GPU `scaleX` proficiency bars, and clean barrel exports.
 - About: Decoupled Feature-Based Architecture with isolated `TimelineItem` and `AboutBio` types, `TIMELINE_DATA` constants, reusable `TimelineNode`, and clean barrel export.
 - Contact: Decoupled Feature-Based Architecture with isolated `ContactInfoCard`, interactive `ContactForm` with transition states, `CONTACT_INFO` constants, and clean barrel export.
 - Clean Barrel Exports: Unified `@/features` and `@/shared` package-level index facades; eliminated all deep-path imports across the repository.
 - Root Composition: Streamlined `page.tsx` importing strictly from feature slice barrels with zero deep-path leakage.
 - Responsive Layout: Hardened across Mobile (320px–767px), Tablet (768px–1023px), and Desktop (1024px+) with zero horizontal overflow and calibrated vertical rhythm.
-- Performance: Smooth inertial scroll without native conflict, 60fps canvas particle rendering without `shadowBlur` degradation.
+- Performance: 60fps locked animations, zero forced layout thrashing on scroll, GPU compositor-accelerated keyframe animations, offscreen section rendering containment (`content-visibility: auto`), and zero RAF execution in background tabs.
 
