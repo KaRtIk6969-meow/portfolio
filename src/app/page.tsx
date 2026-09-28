@@ -1,12 +1,11 @@
 "use client";
 
-import Starfield from "@/features/hero/ui/Starfield";
+import { Hero, Starfield } from "@/features/hero";
+import { Projects } from "@/features/projects";
+import { Skills } from "@/features/skills";
+import { About } from "@/features/about";
+import { Contact } from "@/features/contact";
 import Navbar from "@/shared/components/Navbar";
-import Hero from "@/features/hero/ui/Hero";
-import Projects from "@/features/projects/ui/Projects";
-import Skills from "@/features/skills/ui/Skills";
-import About from "@/features/about/ui/About";
-import Contact from "@/features/contact/ui/Contact";
 import { smoothScrollTo } from "@/shared/utils/scroll";
 import { ArrowUp } from "lucide-react";
 

@@ -4,18 +4,17 @@ import { motion } from "framer-motion";
 import { ArrowDown, Send, Sparkles } from "lucide-react";
 import Button from "@/shared/components/ui/Button";
 import { smoothScrollTo } from "@/shared/utils/scroll";
-
-const techStack = [
-  "Next.js 16",
-  "React 19",
-  "TypeScript",
-  "Tailwind CSS",
-  "Framer Motion",
-  "Architecture",
-];
+import { HERO_CONTENT } from "../constants/hero";
 
 export default function Hero() {
-  const name = "Kartik Sharma";
+  const {
+    name,
+    availabilityStatus,
+    introduction,
+    techStack,
+    primaryCtaText,
+    secondaryCtaText,
+  } = HERO_CONTENT;
 
   const handleScrollTo = (id: string) => {
     smoothScrollTo(id, -20);
@@ -44,7 +43,7 @@ export default function Hero() {
           </span>
           <span className="text-secondary font-mono text-[11px] sm:text-xs tracking-wider uppercase flex items-center gap-1.5">
             <Sparkles className="w-3 h-3" />
-            Available for New Projects
+            {availabilityStatus}
           </span>
         </motion.div>
 
@@ -78,7 +77,7 @@ export default function Hero() {
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.9 }}
           className="text-base sm:text-lg md:text-xl font-sans text-text-primary/80 max-w-2xl mx-auto font-normal leading-relaxed sm:leading-loose mb-7 sm:mb-8 select-text"
         >
-          A developer passionate about modern web development, AI, and crafting fluid, interactive digital experiences.
+          {introduction}
         </motion.p>
 
         {/* Dual Call to Action buttons */}
@@ -97,7 +96,7 @@ export default function Hero() {
             icon={<ArrowDown className="w-4 h-4" />}
             className="w-full sm:w-auto px-7 py-3.5 text-sm font-semibold shadow-glow-violet"
           >
-            Explore Projects
+            {primaryCtaText}
           </Button>
 
           <Button
@@ -108,7 +107,7 @@ export default function Hero() {
             icon={<Send className="w-4 h-4" />}
             className="w-full sm:w-auto px-7 py-3.5 text-sm font-semibold"
           >
-            Get In Touch
+            {secondaryCtaText}
           </Button>
         </motion.div>
 
