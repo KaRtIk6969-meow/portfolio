@@ -121,9 +121,10 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
               href={project.github}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`View ${project.title} source code on GitHub (opens in a new tab)`}
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-border-line bg-surface-elevated/70 text-text-secondary hover:text-white hover:border-text-secondary/50 hover:bg-surface-hover text-xs font-mono transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
             >
-              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5" aria-hidden="true">
                 <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
               </svg>
               <span>Source</span>
@@ -134,10 +135,11 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
                 href={project.live}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group/btn inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-secondary/40 bg-secondary/10 hover:bg-secondary hover:text-white text-secondary text-xs font-mono font-medium transition-all duration-300 cursor-pointer hover:shadow-glow-cyan active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
+                aria-label={`Visit ${project.title} live demo (opens in a new tab)`}
+                className="group/btn inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-secondary/40 bg-secondary/10 hover:bg-secondary hover:text-surface-main text-secondary text-xs font-mono font-medium transition-all duration-300 cursor-pointer hover:shadow-glow-cyan active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
               >
                 <span>Live Demo</span>
-                <ExternalLink className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                <ExternalLink className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" aria-hidden="true" />
               </a>
             )}
           </div>

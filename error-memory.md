@@ -64,3 +64,18 @@ Tracks architectural bugs, performance bottlenecks, root causes, and verified fi
   2. Updated `Skills.tsx` tabs with `justify-start sm:justify-center` and `shrink-0` on buttons and pill, eliminating negative coordinate clipping.
   3. Added `max-h-[calc(100vh-6rem)] overflow-y-auto` to `Navbar.tsx` mobile drawer.
 
+### Bug 009: Client Performance Bottlenecks (Delayed LCP, Background Canvas GPU Drain, Forced Reflow in Buttons)
+- **Symptom**:
+  1. Largest Contentful Paint (LCP) was artificially delayed by >1.4s on initial page load, and the hero title was invisible prior to JS hydration.
+  2. Mobile devices experienced elevated GPU fill-rate drain when scrolling past the hero due to the full-viewport canvas animating behind backdrop filters.
+  3. Mouse movement over magnetic buttons invoked forced geometry recalculations on every pixel.
+- **Root Cause**:
+  1. `Hero.tsx` split `<h1>` characters into 12 `<motion.span>` components with `initial={{ opacity: 0 }}` and staged delays up to 0.73s + 0.7s duration.
+  2. `Starfield.tsx` and `LenisProvider.tsx` ran concurrent unthrottled `requestAnimationFrame` loops even when scrolled far past the hero and in background tabs.
+  3. `Button.tsx` called `ref.current.getBoundingClientRect()` on every raw `mousemove` event without rect caching or touch-device gating.
+- **Verified Fix Pattern**:
+  1. Accelerated `Hero.tsx` character entrance to `0.025s` delay, set initial opacity to `0.2` (instant paint recognition), and added screen-reader friendly `aria-label={name}`.
+  2. Added scroll-aware pausing in `Starfield.tsx` when `scrollY > innerHeight * 1.3`, and added `visibilitychange` listeners in both `Starfield.tsx` and `LenisProvider.tsx`.
+  3. Cached bounding rect on `mouseenter` in `Button.tsx` and disabled magnetic physics on touch devices (`pointer: coarse`).
+  4. Enabled `optimizePackageImports: ['lucide-react', 'framer-motion']` in `next.config.ts`, and replaced inner progress bar `<motion.div>` with hardware-accelerated CSS transition.
+

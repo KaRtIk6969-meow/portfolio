@@ -46,27 +46,32 @@ export default function Hero() {
           </span>
         </motion.div>
 
-        {/* Cinematic split character title animation with word-wrapping protection */}
-        <h1 className="text-4xl sm:text-6xl md:text-7xl font-sans font-black tracking-tight text-white mb-4 sm:mb-5 leading-tight select-text">
-          {name.split(" ").map((word, wordIndex) => (
-            <span key={wordIndex} className="inline-block whitespace-nowrap mx-1.5 sm:mx-2.5">
-              {word.split("").map((char, charIndex) => (
-                <motion.span
-                  key={charIndex}
-                  initial={{ opacity: 0, y: 25 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: 0.7,
-                    ease: [0.22, 1, 0.36, 1],
-                    delay: 0.25 + (wordIndex * 7 + charIndex) * 0.04,
-                  }}
-                  className="inline-block"
-                >
-                  {char}
-                </motion.span>
-              ))}
-            </span>
-          ))}
+        {/* Cinematic split character title animation with word-wrapping protection and optimized LCP */}
+        <h1
+          aria-label={name}
+          className="text-4xl sm:text-6xl md:text-7xl font-sans font-black tracking-tight text-white mb-4 sm:mb-5 leading-tight select-text"
+        >
+          <span aria-hidden="true">
+            {name.split(" ").map((word, wordIndex) => (
+              <span key={wordIndex} className="inline-block whitespace-nowrap mx-1.5 sm:mx-2.5">
+                {word.split("").map((char, charIndex) => (
+                  <motion.span
+                    key={charIndex}
+                    initial={{ opacity: 0.2, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.45,
+                      ease: [0.16, 1, 0.3, 1],
+                      delay: 0.05 + (wordIndex * 7 + charIndex) * 0.025,
+                    }}
+                    className="inline-block"
+                  >
+                    {char}
+                  </motion.span>
+                ))}
+              </span>
+            ))}
+          </span>
         </h1>
 
         {/* Subtitle with refined copy, comfortable line spacing, and enhanced contrast */}
@@ -129,21 +134,20 @@ export default function Hero() {
       </div>
 
       {/* Responsive bouncing scroll cue */}
-      <motion.div
+      <motion.button
+        type="button"
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.65 }}
         transition={{ duration: 0.8, delay: 1.5 }}
-        className="mt-8 sm:mt-10 flex flex-col items-center gap-1.5 font-mono text-[10px] text-text-secondary tracking-widest uppercase cursor-pointer hover:text-secondary transition-colors"
+        className="mt-8 sm:mt-10 flex flex-col items-center gap-1.5 font-mono text-[10px] text-text-secondary tracking-widest uppercase cursor-pointer hover:text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary rounded-lg px-2 py-1 transition-colors"
         onClick={() => handleScrollTo("projects")}
-        role="button"
-        tabIndex={0}
-        aria-label="Scroll to projects"
+        aria-label="Scroll to projects section"
       >
         <span>Scroll</span>
         <div className="animate-bounce-subtle">
-          <ArrowDown className="w-3.5 h-3.5 text-secondary" />
+          <ArrowDown className="w-3.5 h-3.5 text-secondary" aria-hidden="true" />
         </div>
-      </motion.div>
+      </motion.button>
     </section>
   );
 }

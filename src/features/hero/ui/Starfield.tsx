@@ -155,29 +155,56 @@ export default function Starfield() {
         }
       }
 
-      animationFrameId = requestAnimationFrame(animate);
+      if (isVisible) {
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    };
+
+    const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let isScrolledPastHero = false;
+
+    const updateAnimationState = () => {
+      if (prefersReducedMotion) return;
+      const shouldRun = !document.hidden && !isScrolledPastHero;
+      if (shouldRun !== isVisible) {
+        isVisible = shouldRun;
+        if (isVisible) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = requestAnimationFrame(animate);
+        } else {
+          cancelAnimationFrame(animationFrameId);
+        }
+      }
+    };
+
+    const handleScroll = () => {
+      const past = window.scrollY > window.innerHeight * 1.3;
+      if (past !== isScrolledPastHero) {
+        isScrolledPastHero = past;
+        updateAnimationState();
+      }
     };
 
     const handleVisibilityChange = () => {
-      isVisible = !document.hidden;
-      if (isVisible) {
-        cancelAnimationFrame(animationFrameId);
-        animationFrameId = requestAnimationFrame(animate);
-      } else {
-        cancelAnimationFrame(animationFrameId);
-      }
+      updateAnimationState();
     };
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     window.addEventListener("resize", handleResize, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    // Initial loop ignition
-    animationFrameId = requestAnimationFrame(animate);
+    // Initial ignition: single frame for reduced-motion, continuous RAF otherwise
+    if (prefersReducedMotion) {
+      animate();
+    } else {
+      animationFrameId = requestAnimationFrame(animate);
+    }
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       cancelAnimationFrame(animationFrameId);
     };

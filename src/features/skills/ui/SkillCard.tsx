@@ -58,13 +58,20 @@ export default function SkillCard({ skill, index, category }: SkillCardProps) {
       </div>
 
       {/* Hardware-accelerated GPU scaleX progress bar */}
-      <div className="w-full h-1.5 bg-surface-main rounded-full overflow-hidden mt-2.5 border border-border-line/70">
-        <motion.div
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: skill.proficiency / 100 }}
-          style={{ originX: 0 }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: index * 0.04 }}
-          className={`w-full h-full ${categoryProgressBar[category]}`}
+      <div
+        className="w-full h-1.5 bg-surface-main rounded-full overflow-hidden mt-2.5 border border-border-line/70"
+        role="progressbar"
+        aria-valuenow={skill.proficiency}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label={`${skill.name} proficiency`}
+      >
+        <div
+          style={{
+            transform: `scaleX(${skill.proficiency / 100})`,
+            transformOrigin: "left",
+          }}
+          className={`w-full h-full transition-transform duration-700 ease-out ${categoryProgressBar[category]}`}
         />
       </div>
     </motion.div>
