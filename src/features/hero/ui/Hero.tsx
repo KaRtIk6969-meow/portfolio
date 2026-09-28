@@ -63,7 +63,6 @@ export default function Hero() {
                     delay: 0.25 + (wordIndex * 7 + charIndex) * 0.04,
                   }}
                   className="inline-block"
-                  style={{ willChange: "transform, opacity" }}
                 >
                   {char}
                 </motion.span>

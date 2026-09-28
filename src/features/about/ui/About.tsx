@@ -96,7 +96,6 @@ export default function About() {
               delay: index * 0.1,
             }}
             className="relative pl-6 sm:pl-8 pb-8 sm:pb-12 last:pb-0"
-            style={{ willChange: "transform, opacity" }}
           >
             {/* Timeline node icon circles */}
             <div className="absolute -left-4 top-1.5 w-8 h-8 rounded-full bg-surface-main border border-border-line flex items-center justify-center shadow-lg z-10">

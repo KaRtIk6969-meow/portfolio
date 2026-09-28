@@ -17,7 +17,7 @@ export default function Starfield() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: false });
     if (!ctx) return;
 
     let animationFrameId: number;
@@ -25,7 +25,7 @@ export default function Starfield() {
     let width = 0;
     let height = 0;
 
-    // Handle high DPI screens smoothly capped at 2x
+    // Handle high DPI screens capped at 2x for optimal battery and GPU performance
     const dpr = Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, 2);
 
     const resizeCanvas = () => {
@@ -43,7 +43,35 @@ export default function Starfield() {
     // Cosmic design token color options
     const starColors = ["#8B5CF6", "#06B6D4", "#F3F4F6", "#A78BFA", "#38BDF8"];
 
-    // Populate particles star arrays
+    // Pre-render star sprites for each color for zero-overhead 60fps GPU blitting
+    const spriteCanvases: Record<string, HTMLCanvasElement> = {};
+    const spriteSize = 32;
+
+    starColors.forEach((color) => {
+      const spriteCanvas = document.createElement("canvas");
+      spriteCanvas.width = spriteSize;
+      spriteCanvas.height = spriteSize;
+      const sCtx = spriteCanvas.getContext("2d");
+      if (sCtx) {
+        const center = spriteSize / 2;
+        // Outer halo
+        sCtx.beginPath();
+        sCtx.arc(center, center, center * 0.9, 0, Math.PI * 2);
+        sCtx.fillStyle = color;
+        sCtx.globalAlpha = 0.22;
+        sCtx.fill();
+
+        // Inner core
+        sCtx.beginPath();
+        sCtx.arc(center, center, center * 0.45, 0, Math.PI * 2);
+        sCtx.fillStyle = color;
+        sCtx.globalAlpha = 0.95;
+        sCtx.fill();
+      }
+      spriteCanvases[color] = spriteCanvas;
+    });
+
+    // Populate particles star array
     const starCount = 140;
     const stars: Star[] = [];
 
@@ -112,26 +140,20 @@ export default function Starfield() {
         const py = star.y * k + height / 2 + mouseY;
 
         if (px >= 0 && px <= width && py >= 0 && py <= height) {
-          const projectedSize = Math.min(star.size * k, 3.2);
-
-          // Layered celestial glow without GPU-killing shadowBlur
-          // Outer halo (celestial ambient glow)
-          ctx.beginPath();
-          ctx.arc(px, py, projectedSize * 1.8, 0, Math.PI * 2);
-          ctx.fillStyle = star.color;
-          ctx.globalAlpha = 0.18;
-          ctx.fill();
-
-          // Bright star core
-          ctx.beginPath();
-          ctx.arc(px, py, projectedSize, 0, Math.PI * 2);
-          ctx.fillStyle = star.color;
-          ctx.globalAlpha = 0.9;
-          ctx.fill();
+          const projectedRadius = Math.min(star.size * k * 1.8, 6);
+          const sprite = spriteCanvases[star.color];
+          if (sprite) {
+            ctx.drawImage(
+              sprite,
+              px - projectedRadius,
+              py - projectedRadius,
+              projectedRadius * 2,
+              projectedRadius * 2
+            );
+          }
         }
       }
 
-      ctx.globalAlpha = 1.0;
       animationFrameId = requestAnimationFrame(animate);
     };
 
@@ -149,7 +171,6 @@ export default function Starfield() {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 w-full h-full pointer-events-none z-0"
-      style={{ willChange: "transform" }}
     />
   );
 }

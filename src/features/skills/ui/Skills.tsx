@@ -122,8 +122,7 @@ export default function Skills() {
                   ease: [0.16, 1, 0.3, 1],
                   delay: index * 0.05,
                 }}
-                className="group relative flex flex-col p-4 sm:p-5 glass-panel rounded-xl glow-hover shadow-md hover:scale-[1.03] cursor-default transition-all w-full min-w-0"
-                style={{ willChange: "transform, opacity, box-shadow, border-color" }}
+                className="group relative flex flex-col p-4 sm:p-5 glass-panel rounded-xl glow-hover shadow-md hover:scale-[1.03] cursor-default transition-transform duration-300 w-full min-w-0"
               >
                 <div className="flex justify-between items-start mb-4">
                   <h3 className="font-sans font-bold text-white group-hover:text-secondary transition-colors duration-300">
@@ -138,20 +137,21 @@ export default function Skills() {
                   Experience: {skill.years}
                 </p>
 
-                {/* Subtle indicator bar */}
+                {/* Subtle indicator bar using GPU scaleX instead of width reflow */}
                 <div className="w-full h-1 bg-surface-main rounded-full overflow-hidden mt-3 border border-border-line">
                   <motion.div
-                    initial={{ width: 0 }}
+                    initial={{ scaleX: 0 }}
                     animate={{
-                      width:
+                      scaleX:
                         skill.level === "Expert"
-                          ? "100%"
+                          ? 1
                           : skill.level === "Advanced"
-                          ? "80%"
-                          : "60%",
+                          ? 0.8
+                          : 0.6,
                     }}
-                    transition={{ duration: 1.2, ease: "easeOut", delay: index * 0.08 }}
-                    className="h-full bg-[linear-gradient(90deg,var(--color-primary)_0%,var(--color-secondary)_100%)]"
+                    style={{ originX: 0 }}
+                    transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: index * 0.06 }}
+                    className="w-full h-full bg-[linear-gradient(90deg,var(--color-primary)_0%,var(--color-secondary)_100%)]"
                   />
                 </div>
               </motion.div>

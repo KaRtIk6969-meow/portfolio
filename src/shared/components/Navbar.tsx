@@ -17,32 +17,34 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Track active section and scroll state with RAF throttling for 60fps smoothness
+  // Track active section and scroll state with state deduplication and RAF throttling
   useEffect(() => {
     let ticking = false;
 
     const updateScroll = () => {
-      setScrolled(window.scrollY > 25);
+      const isScrolled = window.scrollY > 25;
+      setScrolled((prev) => (prev !== isScrolled ? isScrolled : prev));
 
       const sections = ["hero", "projects", "skills", "about", "contact"];
       const scrollPosition = window.scrollY + 220;
       const isBottom =
         window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 80;
 
+      let nextSection = "hero";
       if (isBottom) {
-        setActiveSection("contact");
-      } else if (window.scrollY < 260) {
-        setActiveSection("hero");
-      } else {
+        nextSection = "contact";
+      } else if (window.scrollY >= 260) {
         for (let i = sections.length - 1; i >= 0; i--) {
           const id = sections[i];
           const element = document.getElementById(id);
           if (element && element.offsetTop <= scrollPosition) {
-            setActiveSection(id);
+            nextSection = id;
             break;
           }
         }
       }
+
+      setActiveSection((prev) => (prev !== nextSection ? nextSection : prev));
       ticking = false;
     };
 
@@ -82,9 +84,7 @@ export default function Navbar() {
   const handleNavClick = useCallback((id: string) => {
     setIsMobileMenuOpen(false);
     if (id === "hero") {
-      if (typeof window !== "undefined") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
+      smoothScrollTo("hero", 0);
     } else {
       // 70px offset leaves comfortable breathing space below the floating header
       setTimeout(() => {
