@@ -134,7 +134,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
                 href={project.live}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-secondary/40 bg-secondary/10 hover:bg-secondary hover:text-white text-secondary text-xs font-mono font-medium transition-all duration-300 cursor-pointer hover:shadow-glow-cyan active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
+                className="group/btn inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-secondary/40 bg-secondary/10 hover:bg-secondary hover:text-white text-secondary text-xs font-mono font-medium transition-all duration-300 cursor-pointer hover:shadow-glow-cyan active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
               >
                 <span>Live Demo</span>
                 <ExternalLink className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />

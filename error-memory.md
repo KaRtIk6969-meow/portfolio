@@ -50,3 +50,17 @@ Tracks architectural bugs, performance bottlenecks, root causes, and verified fi
   4. Offloaded Hero scroll bounce to GPU compositor via pure CSS `@keyframes bounce-subtle`.
   5. Swapped `transition-all` with targeted `transition-[transform,box-shadow,border-color]` on interactive cards.
 
+### Bug 008: Responsive Breakpoint Deficiencies (Tablet Email Overflow, Tabs Negative Scroll Clipping, Drawer Truncation)
+- **Symptom**:
+  1. On tablet viewports (768px–860px), the email string overflowed the ContactInfoCard right boundary by ~50px.
+  2. On narrow mobile viewports (< 360px), the Skills category tabs scroll container clipped the left side of the "Frontend" tab into negative scroll space.
+  3. On short or landscape mobile screens (< 420px height), the mobile drawer's bottom CTA button clipped below the fold without the ability to scroll.
+- **Root Cause**:
+  1. `sm:break-normal` disabled wrapping at 640px, while `md:grid-cols-5` compressed `ContactInfoCard` into a 40% column span (~233px) at 768px, narrower than the 28-character monospace email (~235px).
+  2. `Skills.tsx` used `flex justify-center` with `overflow-x-auto`. Centering overflowing flex items forces the start of content into unreachable negative scroll coordinates.
+  3. `Navbar.tsx` mobile drawer lacked `max-h` and `overflow-y-auto`.
+- **Verified Fix Pattern**:
+  1. Applied `break-all lg:break-normal min-w-0` in `ContactInfoCard.tsx`, maintaining wrap capability across tablet columns until desktop (1024px+).
+  2. Updated `Skills.tsx` tabs with `justify-start sm:justify-center` and `shrink-0` on buttons and pill, eliminating negative coordinate clipping.
+  3. Added `max-h-[calc(100vh-6rem)] overflow-y-auto` to `Navbar.tsx` mobile drawer.
+

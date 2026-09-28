@@ -66,13 +66,8 @@ export default function Navbar() {
 
   // Close mobile drawer on desktop resize or Escape key press
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 768) setIsMobileMenuOpen(false);
-    };
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsMobileMenuOpen(false);
-    };
-
+    const handleResize = () => { if (window.innerWidth >= 768) setIsMobileMenuOpen(false); };
+    const handleKeyDown = (e: KeyboardEvent) => { if (e.key === "Escape") setIsMobileMenuOpen(false); };
     window.addEventListener("resize", handleResize, { passive: true });
     window.addEventListener("keydown", handleKeyDown);
     return () => {
@@ -198,7 +193,7 @@ export default function Navbar() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -16, scale: 0.98 }}
               transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed top-20 inset-x-4 z-50 md:hidden bg-surface-elevated/95 backdrop-blur-2xl border border-border-line/90 rounded-2xl p-5 shadow-2xl overflow-hidden"
+              className="fixed top-20 inset-x-4 z-50 md:hidden max-h-[calc(100vh-6rem)] overflow-y-auto bg-surface-elevated/95 backdrop-blur-2xl border border-border-line/90 rounded-2xl p-5 shadow-2xl"
               role="dialog"
               aria-modal="true"
               aria-label="Mobile Navigation"

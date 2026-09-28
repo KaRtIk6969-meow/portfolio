@@ -34,15 +34,15 @@ export default function Skills() {
       </div>
 
       {/* Tabs controller with responsive horizontal overflow protection */}
-      <div className="flex justify-center mb-8 sm:mb-12 w-full overflow-x-auto py-1 scrollbar-none">
-        <div className="inline-flex max-w-full bg-surface-elevated/90 border border-border-line rounded-full p-1 sm:p-1.5 shadow-inner">
+      <div className="flex justify-start sm:justify-center mb-8 sm:mb-12 w-full overflow-x-auto py-1 px-2 scrollbar-none">
+        <div className="inline-flex shrink-0 bg-surface-elevated/90 border border-border-line rounded-full p-1 sm:p-1.5 shadow-inner">
           {CATEGORY_TABS.map((tab) => {
             const isActive = activeCategory === tab.id;
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveCategory(tab.id)}
-                className={`relative flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full font-sans text-xs sm:text-sm font-semibold tracking-wide cursor-pointer transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary ${
+                className={`shrink-0 relative flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full font-sans text-xs sm:text-sm font-semibold tracking-wide cursor-pointer transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary ${
                   isActive ? "text-white" : "text-text-secondary hover:text-white"
                 }`}
               >

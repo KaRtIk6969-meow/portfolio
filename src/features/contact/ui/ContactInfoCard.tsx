@@ -21,11 +21,11 @@ export default function ContactInfoCard() {
         {CONTACT_INFO.hubDescription}
       </p>
 
-      <div className="flex items-center gap-3 text-xs sm:text-sm font-mono text-white">
+      <div className="flex items-center gap-3 text-xs sm:text-sm font-mono text-white min-w-0">
         <div className="w-9 h-9 shrink-0 rounded-full bg-surface-elevated border border-border-line flex items-center justify-center">
           <Mail className="w-4 h-4 text-secondary" />
         </div>
-        <span className="break-all sm:break-normal">{CONTACT_INFO.email}</span>
+        <span className="break-all lg:break-normal min-w-0">{CONTACT_INFO.email}</span>
       </div>
     </motion.div>
   );

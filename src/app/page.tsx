@@ -25,7 +25,7 @@ export default function Home() {
       {/* Footer copyright and navigation section */}
       <footer className="relative z-10 py-12 px-6 border-t border-border-line/50 text-xs font-mono text-text-secondary bg-surface-main/90">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p>© {new Date().getFullYear()} Kartik Sharma. Cosmic Developer Portfolio.</p>
+          <p className="text-center sm:text-left">© {new Date().getFullYear()} Kartik Sharma. Cosmic Developer Portfolio.</p>
           
           <button
             onClick={() => smoothScrollTo("hero")}
