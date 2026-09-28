@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight, Sparkles } from "lucide-react";
 import { smoothScrollTo } from "@/shared/utils";
@@ -16,6 +16,9 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState<string>("hero");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const toggleButtonRef = useRef<HTMLButtonElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const wasMenuOpenRef = useRef(false);
 
   // Active section tracking with zero-reflow IntersectionObserver
   useEffect(() => {
@@ -75,6 +78,40 @@ export default function Navbar() {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+
+  // Manage drawer focus trap and return focus to toggle button upon close
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      wasMenuOpenRef.current = true;
+      const timer = setTimeout(() => {
+        const focusable = drawerRef.current?.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        focusable?.[0]?.focus();
+      }, 50);
+      return () => clearTimeout(timer);
+    } else if (wasMenuOpenRef.current) {
+      toggleButtonRef.current?.focus();
+    }
+  }, [isMobileMenuOpen]);
+
+  const handleDrawerKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Tab") {
+      const focusable = drawerRef.current?.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusable || focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  };
 
   const handleNavClick = useCallback((id: string) => {
     setIsMobileMenuOpen(false);
@@ -163,6 +200,7 @@ export default function Navbar() {
             </button>
 
             <button
+              ref={toggleButtonRef}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden flex items-center justify-center w-9 h-9 rounded-full bg-surface-main/80 border border-border-line text-text-secondary hover:text-text-primary hover:border-secondary transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary active:scale-95"
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
@@ -189,6 +227,8 @@ export default function Navbar() {
             />
 
             <motion.div
+              ref={drawerRef}
+              onKeyDown={handleDrawerKeyDown}
               initial={{ opacity: 0, y: -16, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -16, scale: 0.98 }}

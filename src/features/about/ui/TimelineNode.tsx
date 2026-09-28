@@ -35,9 +35,9 @@ export default function TimelineNode({ item, index }: TimelineNodeProps) {
             <Calendar className="w-3.5 h-3.5" />
             {item.year}
           </span>
-          <h4 className="text-xs sm:text-sm font-sans font-bold text-white uppercase tracking-wider">
+          <span className="text-xs sm:text-sm font-sans font-bold text-white uppercase tracking-wider">
             {item.company}
-          </h4>
+          </span>
         </div>
 
         <h3 className="text-base sm:text-lg font-sans font-bold text-white mb-2">

@@ -14,7 +14,7 @@ export default function Home() {
       <Navbar />
 
       {/* Main page layout containers flow */}
-      <main className="relative z-10 flex flex-col w-full min-w-0">
+      <main id="main-content" className="relative z-10 flex flex-col w-full min-w-0">
         <Hero />
         <Projects />
         <Skills />
@@ -29,7 +29,7 @@ export default function Home() {
           
           <button
             onClick={() => smoothScrollTo("hero")}
-            className="flex items-center gap-1.5 text-text-secondary hover:text-secondary transition-colors cursor-pointer group py-1 px-3 rounded-full hover:bg-surface-elevated/60"
+            className="flex items-center gap-1.5 text-text-secondary hover:text-secondary transition-colors cursor-pointer group py-1 px-3 rounded-full hover:bg-surface-elevated/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
             aria-label="Back to top"
           >
             <span>BACK TO TOP</span>
