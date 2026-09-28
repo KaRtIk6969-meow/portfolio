@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight, Sparkles } from "lucide-react";
-import { smoothScrollTo } from "@/shared/utils/scroll";
+import { smoothScrollTo } from "@/shared/utils";
 
 const navItems = [
   { id: "projects", label: "PROJECTS" },

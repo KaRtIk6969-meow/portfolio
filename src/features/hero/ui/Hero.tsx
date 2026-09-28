@@ -2,8 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowDown, Send, Sparkles } from "lucide-react";
-import Button from "@/shared/components/ui/Button";
-import { smoothScrollTo } from "@/shared/utils/scroll";
+import { Button, smoothScrollTo } from "@/shared";
 import { HERO_CONTENT } from "../constants/hero";
 
 export default function Hero() {

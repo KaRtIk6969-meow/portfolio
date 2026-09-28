@@ -1,12 +1,7 @@
 "use client";
 
-import { Hero, Starfield } from "@/features/hero";
-import { Projects } from "@/features/projects";
-import { Skills } from "@/features/skills";
-import { About } from "@/features/about";
-import { Contact } from "@/features/contact";
-import Navbar from "@/shared/components/Navbar";
-import { smoothScrollTo } from "@/shared/utils/scroll";
+import { Hero, Starfield, Projects, Skills, About, Contact } from "@/features";
+import { Navbar, smoothScrollTo } from "@/shared";
 import { ArrowUp } from "lucide-react";
 
 export default function Home() {

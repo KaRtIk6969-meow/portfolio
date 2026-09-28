@@ -33,6 +33,7 @@
 - [x] Task 22: Architectural refactoring and decoupling of Contact feature per Feature-Based Architecture (`src/features/contact/`). Extracted `ContactStatus`, `ContactFormData`, and `ContactInfo` to `types/index.ts`, isolated hub metadata and initial form state in `constants/contact.ts`, decoupled presentation into `ContactInfoCard.tsx` and interactive `ContactForm.tsx` with animated transmission status feedback, created barrel export in `index.ts`, and streamlined `Contact.tsx` down to ~40 lines with 0 TypeScript errors.
 - [x] Task 23: Architectural refactoring and decoupling of Hero feature per Feature-Based Architecture (`src/features/hero/`). Extracted `HeroContent` to `types/index.ts`, extracted persona strings, availability status, introduction copy, and tech competency stack into `constants/hero.ts`, refactored `Hero.tsx` to consume data-driven constants, and exposed unified barrel export in `index.ts` for `Hero`, `Starfield`, constants, and types.
 - [x] Task 24: Standardized App Router Page Imports (`src/app/page.tsx`). Converted all feature imports to clean, top-level barrel exports (`@/features/hero`, `@/features/projects`, `@/features/skills`, `@/features/about`, `@/features/contact`), enforcing strict boundary encapsulation across all slices.
+- [x] Task 25: Comprehensive Barrel Imports Architecture across `@/features` and `@/shared`. Created root `src/features/index.ts` aggregating all domain features, implemented layered barrel exports across `src/shared/components/ui/index.ts`, `src/shared/components/index.ts`, `src/shared/utils/index.ts`, and root `src/shared/index.ts`, and refactored consumers (`src/app/page.tsx`, `src/app/layout.tsx`, `src/features/hero/ui/Hero.tsx`, and `src/shared/components/Navbar.tsx`) to eliminate all deep internal path imports with 0 TypeScript errors.
 
 ---
 
@@ -43,6 +44,7 @@
 - Skills: Decoupled Feature-Based Architecture with isolated types, constants, reusable `SkillCard` with category-tuned glowing borders, GPU `scaleX` proficiency bars, and clean barrel exports.
 - About: Decoupled Feature-Based Architecture with isolated `TimelineItem` and `AboutBio` types, `TIMELINE_DATA` constants, reusable `TimelineNode`, and clean barrel export.
 - Contact: Decoupled Feature-Based Architecture with isolated `ContactInfoCard`, interactive `ContactForm` with transition states, `CONTACT_INFO` constants, and clean barrel export.
+- Clean Barrel Exports: Unified `@/features` and `@/shared` package-level index facades; eliminated all deep-path imports across the repository.
 - Root Composition: Streamlined `page.tsx` importing strictly from feature slice barrels with zero deep-path leakage.
 - Responsive Layout: Hardened across Mobile (320px–767px), Tablet (768px–1023px), and Desktop (1024px+) with zero horizontal overflow and calibrated vertical rhythm.
 - Performance: Smooth inertial scroll without native conflict, 60fps canvas particle rendering without `shadowBlur` degradation.
