@@ -4,19 +4,19 @@ import { Project } from "../types";
 
 export const PROJECTS_LIST: Project[] = [
   {
-    title: "Cosmos Engine",
-    category: "WebGL / 3D Graphics",
-    description: "A high-performance WebGL solar system simulation featuring orbital physics, celestial shaders, and interactive camera controllers.",
-    tags: ["Next.js", "TypeScript", "Three.js", "WebGL", "GLSL"],
-    github: "https://github.com/KaRtIk6969-meow/cosmos-engine",
-    live: "https://cosmos-engine.demo.dev",
+    title: "NovaLabsAI",
+    category: "AI Agency & Platform",
+    description: "An interactive agency platform showcasing cutting-edge AI integrations, fluid physics-based gestures, and responsive Next.js architectures.",
+    tags: ["Next.js", "React 19", "TypeScript", "Framer Motion", "Lenis", "Tailwind CSS"],
+    github: "https://github.com/KaRtIk6969-meow/NovaLabsAI",
+    live: "https://nova-labs-ai.vercel.app",
     icon: <Orbit className="w-5 h-5 text-violet-400" />,
     metric: {
-      label: "RENDER SPEED",
-      value: "60 FPS",
+      label: "LIGHTHOUSE",
+      value: "98+",
     },
     status: {
-      label: "Open Source",
+      label: "Live Demo",
     },
     theme: {
       bannerGradient: "bg-[radial-gradient(ellipse_at_top,rgba(139,92,246,0.22)_0%,rgba(30,27,75,0.5)_50%,#030712_100%)]",
@@ -29,16 +29,16 @@ export const PROJECTS_LIST: Project[] = [
     },
   },
   {
-    title: "Nebula Chat",
-    category: "Real-Time Systems",
-    description: "An end-to-end encrypted messaging engine powered by WebSockets, zero-latency state sync, and instant full-text search indexing.",
-    tags: ["React", "Node.js", "WebSockets", "Tailwind CSS", "Redis"],
-    github: "https://github.com/KaRtIk6969-meow/nebula-chat",
-    live: "https://nebula-chat.demo.dev",
+    title: "MindBloomm",
+    category: "Mental Wellness Sanctuary",
+    description: "A personal sanctuary web application engineered for mental wellness, offering compassionate self-navigation tools and accessible guidance.",
+    tags: ["React", "Next.js", "Firebase", "Tailwind CSS", "Web APIs"],
+    github: "https://github.com/KaRtIk6969-meow/mindBloomm",
+    live: "https://mind-bloom-xf.vercel.app",
     icon: <MessageSquare className="w-5 h-5 text-cyan-400" />,
     metric: {
-      label: "ROUNDTRIP",
-      value: "< 15ms",
+      label: "SANCTUARY",
+      value: "Live",
     },
     status: {
       label: "Live Demo",
@@ -54,19 +54,19 @@ export const PROJECTS_LIST: Project[] = [
     },
   },
   {
-    title: "Pulsar Monitor",
-    category: "Observability & Telemetry",
-    description: "An interactive telemetry platform streaming live server metrics, latency anomalies, and automated cloud health diagnostics.",
-    tags: ["Next.js", "Chart.js", "REST APIs", "Tailwind CSS", "Docker"],
-    github: "https://github.com/KaRtIk6969-meow/pulsar-monitor",
-    live: "https://pulsar-monitor.demo.dev",
+    title: "Klickonn",
+    category: "Full-Stack Media SaaS",
+    description: "A high-performance media and publishing platform powered by Neon serverless PostgreSQL, Drizzle ORM, and automated ImageKit pipelines.",
+    tags: ["Next.js", "TypeScript", "Drizzle ORM", "Neon Postgres", "ImageKit"],
+    github: "https://github.com/KaRtIk6969-meow/klickonn",
+    live: "https://klickonn.vercel.app",
     icon: <Activity className="w-5 h-5 text-emerald-400" />,
     metric: {
-      label: "SYSTEM UPTIME",
-      value: "99.98%",
+      label: "SERVERLESS DB",
+      value: "< 25ms",
     },
     status: {
-      label: "Telemetry",
+      label: "Full Stack",
     },
     theme: {
       bannerGradient: "bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.22)_0%,rgba(6,78,59,0.5)_50%,#030712_100%)]",
@@ -79,16 +79,15 @@ export const PROJECTS_LIST: Project[] = [
     },
   },
   {
-    title: "Quasar Store",
-    category: "Headless E-Commerce",
-    description: "A lightning-fast headless commerce platform with incremental static regeneration, Stripe integration, and edge-cached search.",
-    tags: ["React", "Vite", "Stripe API", "CSS Grid", "Edge Functions"],
-    github: "https://github.com/KaRtIk6969-meow/quasar-store",
-    live: "https://quasar-store.demo.dev",
+    title: "Student Management System",
+    category: "Academic Systems & OOP",
+    description: "A structured academic records architecture built in Python 3 with object-oriented paradigms for managing student credentials and evaluation telemetry.",
+    tags: ["Python 3", "OOP Architecture", "Data Modeling", "CLI"],
+    github: "https://github.com/KaRtIk6969-meow/student-managment-system",
     icon: <ShoppingBag className="w-5 h-5 text-amber-400" />,
     metric: {
-      label: "LCP METRIC",
-      value: "0.78s",
+      label: "PARADIGM",
+      value: "OOP Core",
     },
     status: {
       label: "Open Source",
@@ -104,4 +103,3 @@ export const PROJECTS_LIST: Project[] = [
     },
   },
 ];
-

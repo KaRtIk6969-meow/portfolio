@@ -25,7 +25,7 @@ export interface Project {
   description: string;
   tags: string[];
   github: string;
-  live: string;
+  live?: string;
   icon: React.ReactNode;
   metric?: ProjectMetric;
   status?: ProjectStatus;
