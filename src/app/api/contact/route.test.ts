@@ -183,6 +183,36 @@ describe("POST /api/contact", () => {
     );
   });
 
+  it("returns 502 when Resend API fails to dispatch email", async () => {
+    process.env.RESEND_API_KEY = "re_test_invalid";
+    process.env.CONTACT_RECEIVER_EMAIL = "kartiksharmaa2066@gmail.com";
+
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: false,
+      json: async () => ({ message: "API key is invalid or unauthorized." }),
+    });
+    vi.stubGlobal("fetch", mockFetch);
+
+    const payload = {
+      name: "Cosmic Explorer",
+      email: "explorer@cosmos.dev",
+      message: "Transmitting coordinates for rendezvous.",
+    };
+
+    const req = new Request("http://localhost:3000/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const res = await POST(req);
+    const data = await res.json();
+
+    expect(res.status).toBe(502);
+    expect(data.success).toBe(false);
+    expect(data.message).toContain("API key is invalid");
+  });
+
   it("triggers Webhook dispatch when CONTACT_WEBHOOK_URL is configured", async () => {
     process.env.CONTACT_WEBHOOK_URL = "https://hooks.slack.com/services/test";
 

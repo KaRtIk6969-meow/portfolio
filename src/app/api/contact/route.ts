@@ -70,18 +70,41 @@ export async function POST(request: Request) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          from: "Cosmos Portfolio <onboarding@resend.dev>",
+          from: "Portfolio Contact <onboarding@resend.dev>",
           to: [receiverEmail],
           reply_to: trimmedEmail,
-          subject: `Cosmic Contact: Message from ${trimmedName}`,
+          subject: `Portfolio Message from ${trimmedName}`,
           text: `Name: ${trimmedName}\nEmail: ${trimmedEmail}\n\nMessage:\n${trimmedMessage}`,
+          html: `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #334155; border-radius: 12px; background-color: #0b0f19; color: #f8fafc;">
+              <h2 style="color: #38bdf8; margin-top: 0; font-size: 20px; border-bottom: 1px solid #1e293b; padding-bottom: 12px;">New Contact Transmission</h2>
+              <p style="margin: 16px 0 8px 0; color: #94a3b8; font-size: 14px;"><strong>From:</strong> <span style="color: #ffffff;">${trimmedName}</span> (&lt;<a href="mailto:${trimmedEmail}" style="color: #38bdf8; text-decoration: none;">${trimmedEmail}</a>&gt;)</p>
+              <div style="background-color: #111827; border-left: 3px solid #38bdf8; padding: 14px 16px; margin: 20px 0; border-radius: 4px;">
+                <p style="margin: 0; white-space: pre-wrap; color: #e2e8f0; font-size: 15px; line-height: 1.6;">${trimmedMessage}</p>
+              </div>
+              <p style="font-size: 12px; color: #64748b; margin-top: 24px; border-top: 1px solid #1e293b; padding-top: 12px;">Delivered to ${receiverEmail} via Resend</p>
+            </div>
+          `,
         }),
       });
 
       if (!resendResponse.ok) {
-        const errorData = await resendResponse.json();
+        const errorData = await resendResponse.json().catch(() => ({}));
         console.error("[Resend API Error]:", errorData);
+        return NextResponse.json(
+          {
+            success: false,
+            message:
+              (errorData as { message?: string })?.message ||
+              "Failed to dispatch email. Please check your Resend API configuration.",
+          },
+          { status: 502 }
+        );
       }
+    } else if (!webhookUrl) {
+      console.warn(
+        `[Transmission Notice]: No RESEND_API_KEY detected in environment variables. The submission was logged locally in server terminal logs but NOT delivered to ${receiverEmail}. To receive live emails in your inbox, add RESEND_API_KEY to .env.local.`
+      );
     }
 
     // Optional dispatch: Webhook (Slack / Discord / Zapier)
