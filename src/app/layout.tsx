@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Fira_Code } from "next/font/google";
 import "./globals.css";
 import { LenisProvider, SITE_URL, SITE_CONFIG, PERSON_JSON_LD } from "@/shared";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -89,6 +91,8 @@ export default function RootLayout({
         <LenisProvider>
           {children}
         </LenisProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

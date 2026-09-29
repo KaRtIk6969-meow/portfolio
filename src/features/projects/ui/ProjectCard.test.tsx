@@ -1,11 +1,14 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { describe, it, expect, vi } from "vitest";
 import ProjectCard from "./ProjectCard";
 import { Project } from "../types";
+import { NOVALABSAI_CASE_STUDY } from "../constants/case-studies";
 
 describe("ProjectCard component", () => {
   const sampleProjectWithLive: Project = {
+    slug: "novalabsai",
     title: "NovaLabsAI",
     category: "AI Agency & Platform",
     description: "An interactive agency platform showcasing cutting-edge AI integrations.",
@@ -20,9 +23,11 @@ describe("ProjectCard component", () => {
       label: "Live Demo",
     },
     icon: <span data-testid="project-icon" />,
+    caseStudy: NOVALABSAI_CASE_STUDY,
   };
 
   const sampleProjectWithoutLive: Project = {
+    slug: "student-management-system",
     title: "Student Management System",
     category: "Academic Systems & OOP",
     description: "A structured academic records architecture built in Python 3.",
@@ -45,7 +50,6 @@ describe("ProjectCard component", () => {
     expect(screen.getByText("AI Agency & Platform")).toBeInTheDocument();
     expect(screen.getByText(/An interactive agency platform/)).toBeInTheDocument();
     expect(screen.getByText("98+")).toBeInTheDocument();
-    // Both status badge and live demo button render text "Live Demo"
     expect(screen.getAllByText("Live Demo").length).toBe(2);
   });
 
@@ -95,5 +99,39 @@ describe("ProjectCard component", () => {
     });
     expect(sourceLink).toBeInTheDocument();
     expect(screen.getByText("Open Source")).toBeInTheDocument();
+  });
+
+  it("renders Case Study button when caseStudy is present and fires onOpenCaseStudy", async () => {
+    const user = userEvent.setup();
+    const onOpenCaseStudy = vi.fn();
+
+    render(
+      <ProjectCard
+        project={sampleProjectWithLive}
+        index={0}
+        onOpenCaseStudy={onOpenCaseStudy}
+      />
+    );
+
+    const caseStudyBtn = screen.getByRole("button", {
+      name: /View NovaLabsAI technical case study/,
+    });
+    expect(caseStudyBtn).toBeInTheDocument();
+
+    await user.click(caseStudyBtn);
+    expect(onOpenCaseStudy).toHaveBeenCalledTimes(1);
+    expect(onOpenCaseStudy).toHaveBeenCalledWith(
+      sampleProjectWithLive,
+      expect.any(HTMLButtonElement)
+    );
+  });
+
+  it("omits Case Study button when project has no caseStudy defined", () => {
+    render(<ProjectCard project={sampleProjectWithoutLive} index={1} />);
+
+    const caseStudyBtn = screen.queryByRole("button", {
+      name: /View Student Management System technical case study/,
+    });
+    expect(caseStudyBtn).not.toBeInTheDocument();
   });
 });

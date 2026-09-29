@@ -1,9 +1,11 @@
 import React from "react";
 import { Orbit, MessageSquare, Activity, ShoppingBag } from "lucide-react";
 import { Project } from "../types";
+import { NOVALABSAI_CASE_STUDY, KLICKONN_CASE_STUDY } from "./case-studies";
 
 export const PROJECTS_LIST: Project[] = [
   {
+    slug: "novalabsai",
     title: "NovaLabsAI",
     category: "AI Agency & Platform",
     description: "An interactive agency platform showcasing cutting-edge AI integrations, fluid physics-based gestures, and responsive Next.js architectures.",
@@ -18,6 +20,7 @@ export const PROJECTS_LIST: Project[] = [
     status: {
       label: "Live Demo",
     },
+    caseStudy: NOVALABSAI_CASE_STUDY,
     theme: {
       bannerGradient: "bg-[radial-gradient(ellipse_at_top,rgba(139,92,246,0.22)_0%,rgba(30,27,75,0.5)_50%,#030712_100%)]",
       ringBorder: "border-violet-500/25 group-hover:border-violet-400/60",
@@ -29,6 +32,7 @@ export const PROJECTS_LIST: Project[] = [
     },
   },
   {
+    slug: "mindbloomm",
     title: "MindBloomm",
     category: "Mental Wellness Sanctuary",
     description: "A personal sanctuary web application engineered for mental wellness, offering compassionate self-navigation tools and accessible guidance.",
@@ -54,6 +58,7 @@ export const PROJECTS_LIST: Project[] = [
     },
   },
   {
+    slug: "klickonn",
     title: "Klickonn",
     category: "Full-Stack Media SaaS",
     description: "A high-performance media and publishing platform powered by Neon serverless PostgreSQL, Drizzle ORM, and automated ImageKit pipelines.",
@@ -68,6 +73,7 @@ export const PROJECTS_LIST: Project[] = [
     status: {
       label: "Full Stack",
     },
+    caseStudy: KLICKONN_CASE_STUDY,
     theme: {
       bannerGradient: "bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.22)_0%,rgba(6,78,59,0.5)_50%,#030712_100%)]",
       ringBorder: "border-emerald-500/25 group-hover:border-emerald-400/60",
@@ -79,6 +85,7 @@ export const PROJECTS_LIST: Project[] = [
     },
   },
   {
+    slug: "student-management-system",
     title: "Student Management System",
     category: "Academic Systems & OOP",
     description: "A structured academic records architecture built in Python 3 with object-oriented paradigms for managing student credentials and evaluation telemetry.",
