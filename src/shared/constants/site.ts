@@ -30,7 +30,7 @@ export const SITE_CONFIG = {
   ],
   locale: "en_US",
   type: "website",
-  email: "kartik.sharma@cosmos.dev",
+  email: "kartiksharmaa2066@gmail.com",
   github: "https://github.com/KaRtIk6969-meow",
   jobTitle: "Senior Full Stack Developer",
   company: "StellarTech",

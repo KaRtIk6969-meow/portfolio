@@ -6,7 +6,7 @@ export const CONTACT_INFO: ContactInfo = {
   hubTitle: "Connection Hub",
   hubDescription:
     "Feel free to reach out if you want to collaborate on open source projects, discuss full stack engineering opportunities, or simply say hello.",
-  email: "kartik.sharma@cosmos.dev",
+  email: "kartiksharmaa2066@gmail.com",
 };
 
 export const INITIAL_FORM_DATA: ContactFormData = {

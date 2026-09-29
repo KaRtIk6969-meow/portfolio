@@ -57,7 +57,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const receiverEmail = process.env.CONTACT_RECEIVER_EMAIL || "kartik.sharma@cosmos.dev";
+    const receiverEmail = process.env.CONTACT_RECEIVER_EMAIL || "kartiksharmaa2066@gmail.com";
     const resendApiKey = process.env.RESEND_API_KEY;
     const webhookUrl = process.env.CONTACT_WEBHOOK_URL;
 

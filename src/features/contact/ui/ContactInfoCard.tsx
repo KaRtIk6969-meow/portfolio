@@ -21,12 +21,18 @@ export default function ContactInfoCard() {
         {CONTACT_INFO.hubDescription}
       </p>
 
-      <div className="flex items-center gap-3 text-xs sm:text-sm font-mono text-white min-w-0">
-        <div className="w-9 h-9 shrink-0 rounded-full bg-surface-elevated border border-border-line flex items-center justify-center">
+      <a
+        href={`mailto:${CONTACT_INFO.email}`}
+        className="group flex items-center gap-3 text-xs sm:text-sm font-mono text-white min-w-0 transition-colors hover:text-secondary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-secondary/50 rounded-lg p-1 -m-1"
+        title={`Send direct transmission to ${CONTACT_INFO.email}`}
+      >
+        <div className="w-9 h-9 shrink-0 rounded-full bg-surface-elevated border border-border-line flex items-center justify-center group-hover:border-secondary/60 group-hover:bg-secondary/10 transition-colors">
           <Mail className="w-4 h-4 text-secondary" />
         </div>
-        <span className="break-all lg:break-normal min-w-0">{CONTACT_INFO.email}</span>
-      </div>
+        <span className="break-all lg:break-normal min-w-0 group-hover:underline underline-offset-4">
+          {CONTACT_INFO.email}
+        </span>
+      </a>
     </motion.div>
   );
 }
