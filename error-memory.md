@@ -79,3 +79,14 @@ Tracks architectural bugs, performance bottlenecks, root causes, and verified fi
   3. Cached bounding rect on `mouseenter` in `Button.tsx` and disabled magnetic physics on touch devices (`pointer: coarse`).
   4. Enabled `optimizePackageImports: ['lucide-react', 'framer-motion']` in `next.config.ts`, and replaced inner progress bar `<motion.div>` with hardware-accelerated CSS transition.
 
+### Bug 010: JSDOM Environment Deficiencies for Motion & Form Testing
+- **Symptom**:
+  1. Component tests for `ProjectCard` and `ContactForm` threw `ReferenceError: IntersectionObserver is not defined` during mount in Vitest JSDOM environment.
+  2. Form submission test timed out or failed to trigger `onSubmit` handler in JSDOM React 19.
+- **Root Cause**:
+  1. Framer Motion's `whileInView` and `viewport` props depend on browser `IntersectionObserver` and `ResizeObserver` APIs which do not exist in JSDOM.
+  2. JSDOM form submission via button click bubbling does not always dispatch the synthetic form `submit` event under React 19, and HTML5 form validation blocks submissions when input values do not pass browser checks.
+- **Verified Fix Pattern**:
+  1. Polyfilled `IntersectionObserver` (returning immediate intersection) and `ResizeObserver` in `vitest.setup.ts`.
+  2. Used `fireEvent.submit(form)` in `ContactForm.test.tsx` for deterministic submission handling while providing valid email syntax for mock server validation tests.
+
