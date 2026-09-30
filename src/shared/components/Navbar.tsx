@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowUpRight, Sparkles } from "lucide-react";
+import { Menu, X, ArrowUpRight, Sparkles, Search } from "lucide-react";
 import { smoothScrollTo } from "@/shared/utils/scroll";
 
 const navItems = [
@@ -12,7 +12,12 @@ const navItems = [
   { id: "contact", label: "CONTACT" },
 ];
 
-export default function Navbar() {
+export interface NavbarProps {
+  onOpenCommandPalette?: () => void;
+}
+
+export default function Navbar({ onOpenCommandPalette }: NavbarProps = {}) {
+
   const [activeSection, setActiveSection] = useState<string>("hero");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -164,6 +169,19 @@ export default function Navbar() {
               <span className="tracking-wide">AVAILABLE</span>
             </div>
 
+            {/* Quick Command Palette trigger */}
+            {onOpenCommandPalette && (
+              <button
+                type="button"
+                onClick={onOpenCommandPalette}
+                aria-label="Open command palette (Ctrl+K)"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-surface-main/80 border border-border-line hover:border-secondary/50 text-text-secondary hover:text-white text-xs font-mono transition-all duration-200 cursor-pointer shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
+              >
+                <Search className="w-3.5 h-3.5 text-secondary" />
+                <span className="hidden sm:inline text-[11px] text-text-muted">⌘K</span>
+              </button>
+            )}
+
             {/* Quick Contact CTA */}
             <button
               onClick={() => handleNavClick("contact")}
@@ -172,6 +190,7 @@ export default function Navbar() {
               <span>CONNECT</span>
               <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
             </button>
+
 
             {/* Mobile Hamburger Button */}
             <button
@@ -247,7 +266,23 @@ export default function Navbar() {
                   );
                 })}
 
-                <div className="pt-2 mt-1 border-t border-border-line/60">
+                <div className="pt-2 mt-1 border-t border-border-line/60 flex flex-col gap-2">
+                  {onOpenCommandPalette && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        onOpenCommandPalette();
+                      }}
+                      className="flex items-center justify-between w-full px-4 py-2.5 rounded-xl font-mono text-xs tracking-wider text-left bg-surface-main/60 border border-border-line text-secondary hover:text-white hover:border-secondary/40 transition-all cursor-pointer"
+                    >
+                      <span className="flex items-center gap-2">
+                        <Search className="w-3.5 h-3.5" />
+                        <span>COMMAND PALETTE</span>
+                      </span>
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-surface-elevated border border-border-line text-text-muted">⌘K</span>
+                    </button>
+                  )}
                   <button
                     onClick={() => handleNavClick("contact")}
                     className="w-full flex items-center justify-center gap-2 py-3 bg-primary hover:bg-primary-hover active:scale-[0.98] text-white rounded-xl font-sans font-bold text-xs tracking-wide transition-all duration-200 shadow-glow-violet cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-main"
@@ -256,6 +291,7 @@ export default function Navbar() {
                     <ArrowUpRight className="w-4 h-4" />
                   </button>
                 </div>
+
               </div>
             </motion.div>
           </>

@@ -42,3 +42,9 @@ class MockResizeObserver {
 }
 
 global.ResizeObserver = MockResizeObserver as unknown as typeof ResizeObserver;
+
+// Polyfill Element.prototype.scrollIntoView for JSDOM / cmdk active item scrolling
+if (typeof Element !== "undefined" && !Element.prototype.scrollIntoView) {
+  Element.prototype.scrollIntoView = () => {};
+}
+

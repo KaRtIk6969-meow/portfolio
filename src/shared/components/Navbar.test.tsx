@@ -53,4 +53,20 @@ describe("Navbar component", () => {
     expect(toggleButton).toBeInTheDocument();
     expect(toggleButton).toHaveAttribute("aria-expanded", "false");
   });
+
+  it("renders command palette trigger button and invokes callback on click", async () => {
+    const user = userEvent.setup();
+    const onOpenCommandPalette = vi.fn();
+
+    render(<Navbar onOpenCommandPalette={onOpenCommandPalette} />);
+
+    const paletteBtn = screen.getByRole("button", {
+      name: /open command palette/i,
+    });
+    expect(paletteBtn).toBeInTheDocument();
+
+    await user.click(paletteBtn);
+    expect(onOpenCommandPalette).toHaveBeenCalledTimes(1);
+  });
 });
+

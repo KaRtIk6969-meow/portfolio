@@ -100,4 +100,15 @@ Tracks architectural bugs, performance bottlenecks, root causes, and verified fi
 - **Root Cause**: Cloud file synchronization (OneDrive) created duplicated `-LAPTOP-3LPA1AP9` file copies inside `.next/` while building.
 - **Verified Fix Pattern**: Purge stale cloud-synced artifacts from untracked `.next` directory and re-run Next.js build.
 
+### Bug 013: JSDOM Element.prototype.scrollIntoView Undefined in cmdk Keyboard Navigation
+- **Symptom**: Vitest JSDOM tests failed with `TypeError: i.scrollIntoView is not a function` upon mounting `<CommandPalette isOpen={true} />`.
+- **Root Cause**: `cmdk` invokes `element.scrollIntoView()` to ensure active highlighted items are visible, but JSDOM does not implement `scrollIntoView` by default.
+- **Verified Fix Pattern**: Polyfilled `Element.prototype.scrollIntoView = () => {}` in `vitest.setup.ts`.
+
+### Bug 014: Deprecated Lucide Brand Icons Export
+- **Symptom**: React threw `Element type is invalid: expected a string or composite component but got: undefined` during component rendering.
+- **Root Cause**: Brand icons like `Github` are not exported by modern versions of `lucide-react`.
+- **Verified Fix Pattern**: Render inline accessible SVG components (`<GitHubIcon />`) with exact viewBox and path attributes.
+
+
 

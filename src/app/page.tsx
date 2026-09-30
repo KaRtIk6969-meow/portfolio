@@ -7,17 +7,24 @@ import Projects from "@/features/projects/ui/Projects";
 import Skills from "@/features/skills/ui/Skills";
 import About from "@/features/about/ui/About";
 import Contact from "@/features/contact/ui/Contact";
+import { CommandPalette, useCommandPalette } from "@/features/command-palette";
 import { smoothScrollTo } from "@/shared/utils/scroll";
 import { ArrowUp } from "lucide-react";
 
 export default function Home() {
+  const { isOpen, openPalette, closePalette } = useCommandPalette();
+
   return (
     <div className="relative min-h-screen bg-surface-main text-text-primary overflow-x-hidden flex flex-col font-sans">
       {/* Dynamic 3D star particles background */}
       <Starfield />
 
-      {/* Floating navigation header */}
-      <Navbar />
+      {/* Floating navigation header with Command Palette trigger */}
+      <Navbar onOpenCommandPalette={openPalette} />
+
+      {/* Global Futuristic Command Palette (Ctrl+K) */}
+      <CommandPalette isOpen={isOpen} onClose={closePalette} />
+
 
       {/* Main page layout containers flow */}
       <main className="relative z-10 flex flex-col w-full min-w-0">
