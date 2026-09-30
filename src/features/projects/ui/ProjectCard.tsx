@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ExternalLink, Zap, BookOpen } from "lucide-react";
+import { ExternalLink, Zap, BookOpen, Star, GitFork } from "lucide-react";
 import { Project } from "../types";
 
 interface ProjectCardProps {
@@ -16,7 +16,7 @@ export default function ProjectCard({
   index,
   onOpenCaseStudy,
 }: ProjectCardProps) {
-  const { theme, status, metric } = project;
+  const { theme, status, metric, githubStats } = project;
 
   const bannerGradient =
     theme?.bannerGradient ||
@@ -102,9 +102,31 @@ export default function ProjectCard({
             {project.title}
           </h3>
 
-          <p className="text-sm font-sans text-text-secondary leading-relaxed mb-6 font-normal">
+          <p className="text-sm font-sans text-text-secondary leading-relaxed mb-4 font-normal">
             {project.description}
           </p>
+
+          {/* Live GitHub Telemetry stats row */}
+          {githubStats && (
+            <div className="flex flex-wrap items-center gap-3 mb-5 text-[11px] font-mono text-text-secondary">
+              <span className="inline-flex items-center gap-1 text-amber-400 font-semibold" title="GitHub Stars">
+                <Star className="w-3.5 h-3.5 fill-amber-400/20 text-amber-400" aria-hidden="true" />
+                <span>{githubStats.stars} {githubStats.stars === 1 ? "star" : "stars"}</span>
+              </span>
+              {githubStats.forks > 0 && (
+                <span className="inline-flex items-center gap-1 text-cyan-400 font-medium" title="GitHub Forks">
+                  <GitFork className="w-3.5 h-3.5 text-cyan-400" aria-hidden="true" />
+                  <span>{githubStats.forks}</span>
+                </span>
+              )}
+              {githubStats.language && (
+                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-elevated border border-border-line text-text-primary text-[10px]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
+                  <span>{githubStats.language}</span>
+                </span>
+              )}
+            </div>
+          )}
         </div>
 
         <div>
@@ -134,6 +156,12 @@ export default function ProjectCard({
                   <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
                 </svg>
                 <span>Source</span>
+                {githubStats && (
+                  <span className="inline-flex items-center gap-0.5 ml-0.5 text-[10px] text-amber-300 font-semibold" aria-label={`${githubStats.stars} GitHub stars`}>
+                    <Star className="w-2.5 h-2.5 fill-amber-300/30 text-amber-300" aria-hidden="true" />
+                    {githubStats.stars}
+                  </span>
+                )}
               </a>
 
               {project.caseStudy && (
@@ -167,3 +195,5 @@ export default function ProjectCard({
     </motion.div>
   );
 }
+
+

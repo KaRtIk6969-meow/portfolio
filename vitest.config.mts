@@ -6,8 +6,11 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-  plugins: [react()],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  plugins: [react() as any],
   test: {
+
+
     environment: "jsdom",
     globals: true,
     setupFiles: ["./vitest.setup.ts"],

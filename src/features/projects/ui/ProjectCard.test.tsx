@@ -134,4 +134,31 @@ describe("ProjectCard component", () => {
     });
     expect(caseStudyBtn).not.toBeInTheDocument();
   });
+
+  it("renders live GitHub stars, forks, and language telemetry when githubStats is present", () => {
+    const projectWithGitHub: Project = {
+      ...sampleProjectWithLive,
+      githubStats: {
+        name: "NovaLabsAI",
+        fullName: "KaRtIk6969-meow/NovaLabsAI",
+        stars: 48,
+        forks: 6,
+        openIssues: 0,
+        language: "TypeScript",
+        description: "AI platform",
+        updatedAt: "2026-09-30T10:00:00Z",
+        pushedAt: "2026-09-30T12:00:00Z",
+        htmlUrl: "https://github.com/KaRtIk6969-meow/NovaLabsAI",
+        isArchived: false,
+      },
+    };
+
+    render(<ProjectCard project={projectWithGitHub} index={0} />);
+
+    expect(screen.getByText("48 stars")).toBeInTheDocument();
+    expect(screen.getByText("6")).toBeInTheDocument();
+    expect(screen.getAllByText("TypeScript").length).toBe(2);
+  });
 });
+
+

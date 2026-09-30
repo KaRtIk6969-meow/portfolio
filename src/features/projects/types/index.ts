@@ -60,6 +60,20 @@ export interface ProjectCaseStudy {
   engineeringLearnings: string[];
 }
 
+export interface GitHubRepoStats {
+  name: string;
+  fullName: string;
+  stars: number;
+  forks: number;
+  openIssues: number;
+  language: string | null;
+  description: string | null;
+  updatedAt: string;
+  pushedAt: string;
+  htmlUrl: string;
+  isArchived: boolean;
+}
+
 export interface Project {
   slug: string;
   title: string;
@@ -73,4 +87,6 @@ export interface Project {
   status?: ProjectStatus;
   theme?: ProjectTheme;
   caseStudy?: ProjectCaseStudy;
+  githubStats?: GitHubRepoStats;
 }
+
