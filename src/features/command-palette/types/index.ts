@@ -1,6 +1,10 @@
 import React from "react";
 
-export type CommandGroupType = "Navigation" | "Projects" | "Social & External";
+export type CommandGroupType =
+  | "Navigation"
+  | "Projects"
+  | "Social & External"
+  | "System & Tools";
 
 export type CommandActionType = "navigation" | "external" | "action";
 

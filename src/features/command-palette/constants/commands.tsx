@@ -10,6 +10,7 @@ import {
   MessageSquare,
   Activity,
   ShoppingBag,
+  Terminal,
 } from "lucide-react";
 import { CommandItemData } from "../types";
 
@@ -164,5 +165,22 @@ export const COMMANDS: CommandItemData[] = [
     group: "Social & External",
     actionType: "external",
     target: "mailto:kartiksharmaa2066@gmail.com",
+  },
+
+  // --- Tools & System Section ---
+  {
+    id: "tool-terminal",
+    label: "Developer Terminal",
+    subtitle: "Interactive CLI environment • help, neofetch, skills",
+    keywords: ["terminal", "cli", "shell", "console", "command", "bash", "zsh", "neofetch"],
+    icon: <Terminal className="w-4 h-4 text-cyan-400" />,
+    group: "System & Tools",
+    actionType: "action",
+    shortcut: "`",
+    onSelect: () => {
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("cosmos:open-terminal"));
+      }
+    },
   },
 ];

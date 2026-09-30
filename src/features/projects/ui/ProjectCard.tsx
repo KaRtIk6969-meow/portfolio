@@ -2,41 +2,51 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ExternalLink, Zap, BookOpen, Star, GitFork } from "lucide-react";
+import { ExternalLink, Zap, BookOpen, Star, GitFork, Clock } from "lucide-react";
 import { Project } from "../types";
 
 interface ProjectCardProps {
   project: Project;
   index: number;
+  isLoading?: boolean;
+  isError?: boolean;
   onOpenCaseStudy?: (project: Project, triggerEl: HTMLButtonElement) => void;
+}
+
+function formatLastUpdated(isoString?: string): string {
+  if (!isoString) return "";
+  try {
+    const date = new Date(isoString);
+    if (isNaN(date.getTime())) return "";
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
+      timeZone: "UTC",
+    });
+  } catch {
+    return "";
+  }
 }
 
 export default function ProjectCard({
   project,
   index,
+  isLoading = false,
+  isError = false,
   onOpenCaseStudy,
 }: ProjectCardProps) {
   const { theme, status, metric, githubStats } = project;
+  const formattedUpdatedDate = formatLastUpdated(
+    githubStats?.updatedAt || githubStats?.pushedAt
+  );
 
-  const bannerGradient =
-    theme?.bannerGradient ||
-    "bg-[radial-gradient(ellipse_at_top,#1e1b4b_0%,#030712_100%)]";
-  const ringBorder =
-    theme?.ringBorder ||
-    "border-secondary/20 group-hover:border-secondary/50";
-  const iconBorderHover =
-    theme?.iconBorderHover ||
-    "group-hover:border-secondary";
-  const badgeClass =
-    theme?.badgeClass ||
-    "bg-secondary/10 text-secondary border-secondary/25";
-  const glowShadow =
-    theme?.glowShadow ||
-    "group-hover:shadow-[0_0_30px_rgba(6,182,212,0.2)] group-hover:border-secondary/40";
-  const accentText =
-    theme?.accentText || "text-secondary";
-  const tagClass =
-    theme?.tagClass || "hover:border-secondary/40 hover:text-white";
+  const bannerGradient = theme?.bannerGradient || "bg-[radial-gradient(ellipse_at_top,#1e1b4b_0%,#030712_100%)]";
+  const ringBorder = theme?.ringBorder || "border-secondary/20 group-hover:border-secondary/50";
+  const iconBorderHover = theme?.iconBorderHover || "group-hover:border-secondary";
+  const badgeClass = theme?.badgeClass || "bg-secondary/10 text-secondary border-secondary/25";
+  const glowShadow = theme?.glowShadow || "group-hover:shadow-[0_0_30px_rgba(6,182,212,0.2)] group-hover:border-secondary/40";
+  const accentText = theme?.accentText || "text-secondary";
+  const tagClass = theme?.tagClass || "hover:border-secondary/40 hover:text-white";
 
   return (
     <motion.div
@@ -106,9 +116,38 @@ export default function ProjectCard({
             {project.description}
           </p>
 
-          {/* Live GitHub Telemetry stats row */}
+          {/* Loading state shimmer skeleton */}
+          {isLoading && !githubStats && (
+            <div
+              data-testid="github-stats-loading"
+              aria-label="Loading repository telemetry"
+              className="flex items-center gap-2 mb-5 text-[11px] font-mono text-text-secondary animate-pulse"
+            >
+              <div className="h-4 w-16 bg-surface-elevated/80 border border-border-line/60 rounded-full" />
+              <div className="h-4 w-12 bg-surface-elevated/80 border border-border-line/60 rounded-full" />
+              <div className="h-4 w-24 bg-surface-elevated/80 border border-border-line/60 rounded-full" />
+            </div>
+          )}
+
+          {/* Fallback state when telemetry is offline and no stats exist */}
+          {!isLoading && isError && !githubStats && (
+            <div
+              data-testid="github-stats-fallback"
+              className="flex items-center gap-2 mb-5 text-[11px] font-mono text-text-secondary/70"
+            >
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-elevated/60 border border-border-line/60 text-[10px] text-text-secondary">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400/60" />
+                <span>Telemetry offline</span>
+              </span>
+            </div>
+          )}
+
+          {/* Live or cached GitHub Telemetry stats row */}
           {githubStats && (
-            <div className="flex flex-wrap items-center gap-3 mb-5 text-[11px] font-mono text-text-secondary">
+            <div
+              data-testid="github-stats-telemetry"
+              className="flex flex-wrap items-center gap-3 mb-5 text-[11px] font-mono text-text-secondary"
+            >
               <span className="inline-flex items-center gap-1 text-amber-400 font-semibold" title="GitHub Stars">
                 <Star className="w-3.5 h-3.5 fill-amber-400/20 text-amber-400" aria-hidden="true" />
                 <span>{githubStats.stars} {githubStats.stars === 1 ? "star" : "stars"}</span>
@@ -117,6 +156,12 @@ export default function ProjectCard({
                 <span className="inline-flex items-center gap-1 text-cyan-400 font-medium" title="GitHub Forks">
                   <GitFork className="w-3.5 h-3.5 text-cyan-400" aria-hidden="true" />
                   <span>{githubStats.forks}</span>
+                </span>
+              )}
+              {formattedUpdatedDate && (
+                <span className="inline-flex items-center gap-1 text-text-secondary/80 text-[10px]" title={`Last updated: ${githubStats.updatedAt}`}>
+                  <Clock className="w-3 h-3 text-text-secondary/70" aria-hidden="true" />
+                  <span>Updated {formattedUpdatedDate}</span>
                 </span>
               )}
               {githubStats.language && (

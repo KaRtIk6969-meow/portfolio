@@ -11,7 +11,7 @@ import ProjectModal from "./ProjectModal";
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
-  const { stats: gitHubStats } = useGitHubStats();
+  const { stats: gitHubStats, isLoading, error } = useGitHubStats();
 
   const handleOpenCaseStudy = useCallback((project: Project, triggerEl: HTMLButtonElement) => {
     triggerRef.current = triggerEl;
@@ -91,6 +91,8 @@ export default function Projects() {
               key={project.title}
               project={projectWithStats}
               index={index}
+              isLoading={isLoading}
+              isError={Boolean(error || (!isLoading && !repoStats))}
               onOpenCaseStudy={handleOpenCaseStudy}
             />
           );

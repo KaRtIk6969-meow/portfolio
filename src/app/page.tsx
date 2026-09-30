@@ -8,22 +8,38 @@ import Skills from "@/features/skills/ui/Skills";
 import About from "@/features/about/ui/About";
 import Contact from "@/features/contact/ui/Contact";
 import { CommandPalette, useCommandPalette } from "@/features/command-palette";
+import { Terminal, useTerminal } from "@/features/terminal";
 import { smoothScrollTo } from "@/shared/utils/scroll";
 import { ArrowUp } from "lucide-react";
 
 export default function Home() {
-  const { isOpen, openPalette, closePalette } = useCommandPalette();
+  const {
+    isOpen: isPaletteOpen,
+    openPalette,
+    closePalette,
+  } = useCommandPalette();
+  const {
+    isOpen: isTerminalOpen,
+    openTerminal,
+    closeTerminal,
+  } = useTerminal();
 
   return (
     <div className="relative min-h-screen bg-surface-main text-text-primary overflow-x-hidden flex flex-col font-sans">
       {/* Dynamic 3D star particles background */}
       <Starfield />
 
-      {/* Floating navigation header with Command Palette trigger */}
-      <Navbar onOpenCommandPalette={openPalette} />
+      {/* Floating navigation header with Command Palette and Terminal triggers */}
+      <Navbar
+        onOpenCommandPalette={openPalette}
+        onOpenTerminal={openTerminal}
+      />
 
       {/* Global Futuristic Command Palette (Ctrl+K) */}
-      <CommandPalette isOpen={isOpen} onClose={closePalette} />
+      <CommandPalette isOpen={isPaletteOpen} onClose={closePalette} />
+
+      {/* Interactive Developer Terminal (Ctrl+`) */}
+      <Terminal isOpen={isTerminalOpen} onClose={closeTerminal} />
 
 
       {/* Main page layout containers flow */}

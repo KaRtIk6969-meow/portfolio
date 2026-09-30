@@ -156,6 +156,23 @@ export default function CommandPalette({
                     />
                   ))}
                 </Command.Group>
+
+                {/* Group: System & Tools */}
+                <Command.Group
+                  heading={
+                    <span className="text-[10px] font-mono tracking-widest uppercase text-cyan-400/80 px-2.5 py-1 font-semibold block">
+                      System & Tools
+                    </span>
+                  }
+                >
+                  {COMMANDS.filter((c) => c.group === "System & Tools").map((cmd) => (
+                    <CommandItemRow
+                      key={cmd.id}
+                      command={cmd}
+                      onSelect={handleSelect}
+                    />
+                  ))}
+                </Command.Group>
               </Command.List>
 
               {/* Palette footer telemetry cues */}

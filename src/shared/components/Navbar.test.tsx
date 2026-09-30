@@ -68,5 +68,21 @@ describe("Navbar component", () => {
     await user.click(paletteBtn);
     expect(onOpenCommandPalette).toHaveBeenCalledTimes(1);
   });
+
+  it("renders terminal trigger button and invokes callback on click", async () => {
+    const user = userEvent.setup();
+    const onOpenTerminal = vi.fn();
+
+    render(<Navbar onOpenTerminal={onOpenTerminal} />);
+
+    const terminalBtn = screen.getByRole("button", {
+      name: /open interactive terminal/i,
+    });
+    expect(terminalBtn).toBeInTheDocument();
+
+    await user.click(terminalBtn);
+    expect(onOpenTerminal).toHaveBeenCalledTimes(1);
+  });
 });
+
 

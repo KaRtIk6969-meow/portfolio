@@ -110,5 +110,13 @@ Tracks architectural bugs, performance bottlenecks, root causes, and verified fi
 - **Root Cause**: Brand icons like `Github` are not exported by modern versions of `lucide-react`.
 - **Verified Fix Pattern**: Render inline accessible SVG components (`<GitHubIcon />`) with exact viewBox and path attributes.
 
+### Bug 015: GitHub Telemetry Layout Shift and Hydration Mismatches
+- **Symptom**: Cumulative Layout Shift (CLS) when telemetry stats loaded asynchronously on client mount, causing project cards to jump, and potential timezone discrepancies when formatting dates between SSR and client.
+- **Root Cause**: Cards initially rendered without the telemetry row container until client fetch completed; date formatting without explicit UTC timezone can yield differing month/year strings across client locales.
+- **Verified Fix Pattern**: Render a dedicated `animate-pulse` shimmer skeleton container with identical height and spacing (`mb-5 text-[11px]`) when `isLoading && !githubStats`, ensuring zero CLS, and format `updatedAt` with explicit `timeZone: "UTC"`.
 
+### Bug 016: Vite/esbuild Transform Error on JSX within Pure TypeScript `.ts` Files
+- **Symptom**: Vitest test runner threw `TransformError: Unexpected token <` when evaluating helper functions returning JSX elements inside a `.ts` file.
+- **Root Cause**: Vite and esbuild strictly treat `.ts` files as standard TypeScript without JSX syntactic extensions, reserving JSX parsing exclusively for `.tsx` files.
+- **Verified Fix Pattern**: Decouple rich UI renderers into dedicated `.tsx` modules (e.g. `constants/command-renderers.tsx`) while preserving stateful logic hooks (e.g. `hooks/useTerminal.ts`) as pure TypeScript without embedded JSX.
 

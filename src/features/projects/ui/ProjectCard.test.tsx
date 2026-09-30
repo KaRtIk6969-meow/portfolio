@@ -157,7 +157,38 @@ describe("ProjectCard component", () => {
 
     expect(screen.getByText("48 stars")).toBeInTheDocument();
     expect(screen.getByText("6")).toBeInTheDocument();
+    expect(screen.getByText(/Updated Sep 2026/)).toBeInTheDocument();
     expect(screen.getAllByText("TypeScript").length).toBe(2);
+  });
+
+  it("renders shimmering skeleton loading state when isLoading is true and no stats are present", () => {
+    render(
+      <ProjectCard
+        project={sampleProjectWithLive}
+        index={0}
+        isLoading={true}
+      />
+    );
+
+    expect(screen.getByTestId("github-stats-loading")).toBeInTheDocument();
+    expect(screen.queryByTestId("github-stats-telemetry")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("github-stats-fallback")).not.toBeInTheDocument();
+  });
+
+  it("renders telemetry offline fallback indicator when isError is true and no stats are present", () => {
+    render(
+      <ProjectCard
+        project={sampleProjectWithLive}
+        index={0}
+        isLoading={false}
+        isError={true}
+      />
+    );
+
+    expect(screen.getByTestId("github-stats-fallback")).toBeInTheDocument();
+    expect(screen.getByText("Telemetry offline")).toBeInTheDocument();
+    expect(screen.queryByTestId("github-stats-loading")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("github-stats-telemetry")).not.toBeInTheDocument();
   });
 });
 

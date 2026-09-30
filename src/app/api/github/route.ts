@@ -48,11 +48,17 @@ function transformRepoData(raw: RawGitHubRepo): GitHubRepoStats {
   };
 }
 
+interface RepoFetchResult {
+  repo: string;
+  status: number;
+  stats: GitHubRepoStats | null;
+}
+
 async function fetchRepoFromGitHub(
   owner: string,
   repo: string,
   token?: string
-): Promise<GitHubRepoStats | null> {
+): Promise<RepoFetchResult> {
   const headers: Record<string, string> = {
     Accept: "application/vnd.github.v3+json",
     "User-Agent": "DeepSpacePortfolio-2.0",
@@ -76,14 +82,14 @@ async function fetchRepoFromGitHub(
       } else {
         console.warn(`[GitHub API] Failed with status ${res.status} for ${owner}/${repo}`);
       }
-      return null;
+      return { repo, status: res.status, stats: null };
     }
 
     const data: RawGitHubRepo = await res.json();
-    return transformRepoData(data);
+    return { repo, status: 200, stats: transformRepoData(data) };
   } catch (error) {
     console.error(`[GitHub API Fetch Error] ${owner}/${repo}:`, error);
-    return null;
+    return { repo, status: 503, stats: null };
   }
 }
 
@@ -116,20 +122,39 @@ export async function GET(request: NextRequest) {
 
     // Fetch repository stats concurrently
     const results = await Promise.all(
-      targetRepos.map(async (repo) => {
-        const stats = await fetchRepoFromGitHub(owner, repo, token);
-        return { repo, stats };
-      })
+      targetRepos.map((repo) => fetchRepoFromGitHub(owner, repo, token))
     );
 
     const statsMap: Record<string, GitHubRepoStats> = {};
+    let hasOnly404 = true;
 
     for (const item of results) {
       if (item.stats) {
-        // Key by both lowercase and raw name for resilient lookup
         statsMap[item.repo.toLowerCase()] = item.stats;
         statsMap[item.repo] = item.stats;
+        hasOnly404 = false;
+      } else if (item.status !== 404) {
+        hasOnly404 = false;
       }
+    }
+
+    // If all queried repos explicitly returned 404 from GitHub
+    if (results.length > 0 && hasOnly404 && Object.keys(statsMap).length === 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            targetRepos.length === 1
+              ? `Repository not found: ${owner}/${targetRepos[0]}`
+              : `None of the requested repositories were found for owner: ${owner}`,
+        },
+        {
+          status: 404,
+          headers: {
+            "Cache-Control": "no-store",
+          },
+        }
+      );
     }
 
     // Check if we have valid results; update cache
@@ -139,25 +164,38 @@ export async function GET(request: NextRequest) {
         timestamp: Date.now(),
       });
 
-      return NextResponse.json({
-        success: true,
-        data: statsMap,
-        cached: false,
-        source: "github-live",
-      });
+      return NextResponse.json(
+        {
+          success: true,
+          data: statsMap,
+          cached: false,
+          source: "github-live",
+        },
+        {
+          headers: {
+            "Cache-Control": "public, s-maxage=1800, stale-while-revalidate=86400",
+          },
+        }
+      );
     }
 
-    // If live fetch completely failed or was rate limited, check fallback memory cache
+    // If live fetch failed due to rate limits or network issues, check fallback memory cache
     const cachedEntry = memoryCache.get(cacheKey);
     if (cachedEntry && Date.now() - cachedEntry.timestamp < CACHE_TTL_MS) {
-      return NextResponse.json({
-        success: true,
-        data: cachedEntry.data,
-        cached: true,
-        source: "memory-cache-fallback",
-      });
+      return NextResponse.json(
+        {
+          success: true,
+          data: cachedEntry.data,
+          cached: true,
+          source: "memory-cache-fallback",
+        },
+        {
+          headers: {
+            "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
+          },
+        }
+      );
     }
-
 
     // Clean mock fallback if API is unreachable and cache is cold
     const fallbackMap: Record<string, GitHubRepoStats> = {};
@@ -179,13 +217,20 @@ export async function GET(request: NextRequest) {
       fallbackMap[repo] = fallback;
     }
 
-    return NextResponse.json({
-      success: true,
-      data: fallbackMap,
-      cached: false,
-      isFallback: true,
-      source: "static-fallback",
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        data: fallbackMap,
+        cached: false,
+        isFallback: true,
+        source: "static-fallback",
+      },
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120",
+        },
+      }
+    );
   } catch (error) {
     console.error("[GitHub API Route Exception]:", error);
     return NextResponse.json(
