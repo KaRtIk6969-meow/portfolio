@@ -23,20 +23,33 @@ export default function LenisProvider({ children }: { children: ReactNode }) {
     }
 
     let animationFrameId: number;
+    let isRunning = true;
     
     function raf(time: number) {
+      if (!isRunning) return;
       lenis.raf(time);
       animationFrameId = requestAnimationFrame(raf);
     }
 
     animationFrameId = requestAnimationFrame(raf);
 
-    // Sync scroll-driven effects on frame tick if needed
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        isRunning = false;
+        cancelAnimationFrame(animationFrameId);
+      } else if (!isRunning) {
+        isRunning = true;
+        animationFrameId = requestAnimationFrame(raf);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
     return () => {
       if (typeof window !== "undefined") {
         (window as unknown as { __lenis?: Lenis }).__lenis = undefined;
       }
-      // Clean up listeners and destroy instance
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       lenis.destroy();
       cancelAnimationFrame(animationFrameId);
     };

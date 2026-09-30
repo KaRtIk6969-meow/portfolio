@@ -2,20 +2,18 @@
 
 import { motion } from "framer-motion";
 import { ArrowDown, Send, Sparkles } from "lucide-react";
-import Button from "@/shared/components/ui/Button";
-import { smoothScrollTo } from "@/shared/utils/scroll";
-
-const techStack = [
-  "Next.js 16",
-  "React 19",
-  "TypeScript",
-  "Tailwind CSS",
-  "Framer Motion",
-  "Architecture",
-];
+import { Button, smoothScrollTo } from "@/shared";
+import { HERO_CONTENT } from "../constants/hero";
 
 export default function Hero() {
-  const name = "Kartik Sharma";
+  const {
+    name,
+    availabilityStatus,
+    introduction,
+    techStack,
+    primaryCtaText,
+    secondaryCtaText,
+  } = HERO_CONTENT;
 
   const handleScrollTo = (id: string) => {
     smoothScrollTo(id, -20);
@@ -44,31 +42,36 @@ export default function Hero() {
           </span>
           <span className="text-secondary font-mono text-[11px] sm:text-xs tracking-wider uppercase flex items-center gap-1.5">
             <Sparkles className="w-3 h-3" />
-            Available for New Projects
+            {availabilityStatus}
           </span>
         </motion.div>
 
-        {/* Cinematic split character title animation with word-wrapping protection */}
-        <h1 className="text-4xl sm:text-6xl md:text-7xl font-sans font-black tracking-tight text-white mb-4 sm:mb-5 leading-tight select-text">
-          {name.split(" ").map((word, wordIndex) => (
-            <span key={wordIndex} className="inline-block whitespace-nowrap mx-1.5 sm:mx-2.5">
-              {word.split("").map((char, charIndex) => (
-                <motion.span
-                  key={charIndex}
-                  initial={{ opacity: 0, y: 25 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: 0.7,
-                    ease: [0.22, 1, 0.36, 1],
-                    delay: 0.25 + (wordIndex * 7 + charIndex) * 0.04,
-                  }}
-                  className="inline-block"
-                >
-                  {char}
-                </motion.span>
-              ))}
-            </span>
-          ))}
+        {/* Cinematic split character title animation with word-wrapping protection and optimized LCP */}
+        <h1
+          aria-label={name}
+          className="text-4xl sm:text-6xl md:text-7xl font-sans font-black tracking-tight text-white mb-4 sm:mb-5 leading-tight select-text"
+        >
+          <span aria-hidden="true">
+            {name.split(" ").map((word, wordIndex) => (
+              <span key={wordIndex} className="inline-block whitespace-nowrap mx-1.5 sm:mx-2.5">
+                {word.split("").map((char, charIndex) => (
+                  <motion.span
+                    key={charIndex}
+                    initial={{ opacity: 0.2, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.45,
+                      ease: [0.16, 1, 0.3, 1],
+                      delay: 0.05 + (wordIndex * 7 + charIndex) * 0.025,
+                    }}
+                    className="inline-block"
+                  >
+                    {char}
+                  </motion.span>
+                ))}
+              </span>
+            ))}
+          </span>
         </h1>
 
         {/* Subtitle with refined copy, comfortable line spacing, and enhanced contrast */}
@@ -78,7 +81,7 @@ export default function Hero() {
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.9 }}
           className="text-base sm:text-lg md:text-xl font-sans text-text-primary/80 max-w-2xl mx-auto font-normal leading-relaxed sm:leading-loose mb-7 sm:mb-8 select-text"
         >
-          A developer passionate about modern web development, AI, and crafting fluid, interactive digital experiences.
+          {introduction}
         </motion.p>
 
         {/* Dual Call to Action buttons */}
@@ -97,7 +100,7 @@ export default function Hero() {
             icon={<ArrowDown className="w-4 h-4" />}
             className="w-full sm:w-auto px-7 py-3.5 text-sm font-semibold shadow-glow-violet"
           >
-            Explore Projects
+            {primaryCtaText}
           </Button>
 
           <Button
@@ -108,7 +111,7 @@ export default function Hero() {
             icon={<Send className="w-4 h-4" />}
             className="w-full sm:w-auto px-7 py-3.5 text-sm font-semibold"
           >
-            Get In Touch
+            {secondaryCtaText}
           </Button>
         </motion.div>
 
@@ -131,24 +134,20 @@ export default function Hero() {
       </div>
 
       {/* Responsive bouncing scroll cue */}
-      <motion.div
+      <motion.button
+        type="button"
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.65 }}
         transition={{ duration: 0.8, delay: 1.5 }}
-        className="mt-8 sm:mt-10 flex flex-col items-center gap-1.5 font-mono text-[10px] text-text-secondary tracking-widest uppercase cursor-pointer hover:text-secondary transition-colors"
+        className="mt-8 sm:mt-10 flex flex-col items-center gap-1.5 font-mono text-[10px] text-text-secondary tracking-widest uppercase cursor-pointer hover:text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary rounded-lg px-2 py-1 transition-colors"
         onClick={() => handleScrollTo("projects")}
-        role="button"
-        tabIndex={0}
-        aria-label="Scroll to projects"
+        aria-label="Scroll to projects section"
       >
         <span>Scroll</span>
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <ArrowDown className="w-3.5 h-3.5 text-secondary" />
-        </motion.div>
-      </motion.div>
+        <div className="animate-bounce-subtle">
+          <ArrowDown className="w-3.5 h-3.5 text-secondary" aria-hidden="true" />
+        </div>
+      </motion.button>
     </section>
   );
 }

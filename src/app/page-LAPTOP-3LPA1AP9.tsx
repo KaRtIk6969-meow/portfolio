@@ -1,13 +1,7 @@
 "use client";
 
-import Starfield from "@/features/hero/ui/Starfield";
-import Navbar from "@/shared/components/Navbar";
-import Hero from "@/features/hero/ui/Hero";
-import Projects from "@/features/projects/ui/Projects";
-import Skills from "@/features/skills/ui/Skills";
-import About from "@/features/about/ui/About";
-import Contact from "@/features/contact/ui/Contact";
-import { smoothScrollTo } from "@/shared/utils/scroll";
+import { Hero, Starfield, Projects, Skills, About, Contact } from "@/features";
+import { Navbar, smoothScrollTo } from "@/shared";
 import { ArrowUp } from "lucide-react";
 
 export default function Home() {
@@ -20,7 +14,7 @@ export default function Home() {
       <Navbar />
 
       {/* Main page layout containers flow */}
-      <main className="relative z-10 flex flex-col w-full min-w-0">
+      <main id="main-content" className="relative z-10 flex flex-col w-full min-w-0">
         <Hero />
         <Projects />
         <Skills />
@@ -31,11 +25,11 @@ export default function Home() {
       {/* Footer copyright and navigation section */}
       <footer className="relative z-10 py-12 px-6 border-t border-border-line/50 text-xs font-mono text-text-secondary bg-surface-main/90">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p>© {new Date().getFullYear()} Kartik Sharma. Cosmic Developer Portfolio.</p>
+          <p className="text-center sm:text-left">© {new Date().getFullYear()} Kartik Sharma. Cosmic Developer Portfolio.</p>
           
           <button
             onClick={() => smoothScrollTo("hero")}
-            className="flex items-center gap-1.5 text-text-secondary hover:text-secondary transition-colors cursor-pointer group py-1 px-3 rounded-full hover:bg-surface-elevated/60"
+            className="flex items-center gap-1.5 text-text-secondary hover:text-secondary transition-colors cursor-pointer group py-1 px-3 rounded-full hover:bg-surface-elevated/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
             aria-label="Back to top"
           >
             <span>BACK TO TOP</span>

@@ -21,7 +21,7 @@ export default function Starfield() {
     if (!ctx) return;
 
     let animationFrameId: number;
-    let isVisible = true;
+    let isVisible = !document.hidden;
     let width = 0;
     let height = 0;
 
@@ -31,8 +31,8 @@ export default function Starfield() {
     const resizeCanvas = () => {
       width = window.innerWidth;
       height = window.innerHeight;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       ctx.scale(dpr, dpr);
@@ -43,7 +43,7 @@ export default function Starfield() {
     // Cosmic design token color options
     const starColors = ["#8B5CF6", "#06B6D4", "#F3F4F6", "#A78BFA", "#38BDF8"];
 
-    // Pre-render star sprites for each color for zero-overhead 60fps GPU blitting
+    // Pre-render star sprites for each color for zero-overhead GPU blitting
     const spriteCanvases: Record<string, HTMLCanvasElement> = {};
     const spriteSize = 32;
 
@@ -89,10 +89,15 @@ export default function Starfield() {
     let mouseY = 0;
     let targetMouseX = 0;
     let targetMouseY = 0;
+    let pendingMouseX = 0;
+    let pendingMouseY = 0;
+    let hasPendingMouse = false;
 
+    // Passive mouse tracker decoupling high polling rates from RAF tick
     const handleMouseMove = (event: MouseEvent) => {
-      targetMouseX = (event.clientX - width / 2) * 0.06;
-      targetMouseY = (event.clientY - height / 2) * 0.06;
+      pendingMouseX = event.clientX;
+      pendingMouseY = event.clientY;
+      hasPendingMouse = true;
     };
 
     const handleResize = () => {
@@ -100,20 +105,16 @@ export default function Starfield() {
       resizeCanvas();
     };
 
-    const handleVisibilityChange = () => {
-      isVisible = !document.hidden;
-    };
-
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    window.addEventListener("resize", handleResize, { passive: true });
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
     const speed = 0.45;
 
     const animate = () => {
-      if (!isVisible) {
-        animationFrameId = requestAnimationFrame(animate);
-        return;
+      if (!isVisible) return;
+
+      // Ingest mouse coordinates once per render frame
+      if (hasPendingMouse) {
+        targetMouseX = (pendingMouseX - width / 2) * 0.06;
+        targetMouseY = (pendingMouseY - height / 2) * 0.06;
+        hasPendingMouse = false;
       }
 
       // Smooth canvas trail clear with cosmic void background
@@ -154,14 +155,63 @@ export default function Starfield() {
         }
       }
 
-      animationFrameId = requestAnimationFrame(animate);
+      if (isVisible) {
+        animationFrameId = requestAnimationFrame(animate);
+      }
     };
 
-    animate();
+    const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let isScrolledPastHero = false;
+
+    const updateAnimationState = () => {
+      if (prefersReducedMotion) return;
+      const shouldRun = !document.hidden && !isScrolledPastHero;
+      if (shouldRun !== isVisible) {
+        isVisible = shouldRun;
+        if (isVisible) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = requestAnimationFrame(animate);
+        } else {
+          cancelAnimationFrame(animationFrameId);
+        }
+      }
+    };
+
+    let scrollTicking = false;
+    const handleScroll = () => {
+      if (!scrollTicking) {
+        requestAnimationFrame(() => {
+          const past = window.scrollY > window.innerHeight * 1.3;
+          if (past !== isScrolledPastHero) {
+            isScrolledPastHero = past;
+            updateAnimationState();
+          }
+          scrollTicking = false;
+        });
+        scrollTicking = true;
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      updateAnimationState();
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("resize", handleResize, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // Initial ignition: single frame for reduced-motion, continuous RAF otherwise
+    if (prefersReducedMotion) {
+      animate();
+    } else {
+      animationFrameId = requestAnimationFrame(animate);
+    }
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       cancelAnimationFrame(animationFrameId);
     };
@@ -170,7 +220,9 @@ export default function Starfield() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 w-full h-full pointer-events-none z-0"
+      className="fixed inset-0 w-full h-full pointer-events-none z-0 transform-gpu"
+      style={{ contain: "strict" }}
+      aria-hidden="true"
     />
   );
 }

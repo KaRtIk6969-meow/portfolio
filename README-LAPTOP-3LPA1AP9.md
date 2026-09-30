@@ -1,0 +1,168 @@
+# 🌌 Deep Space Developer Portfolio — Kartik Sharma
+
+[![Next.js](https://img.shields.io/badge/Next.js-16.3.0-black?style=flat&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.2.8-61DAFB?style=flat&logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4.0-38B2AC?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
+[![Vitest](https://img.shields.io/badge/Tested_with-Vitest-6E9F18?style=flat&logo=vitest)](https://vitest.dev/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A high-performance, futuristic developer portfolio built with **Next.js 16 (App Router)**, **React 19**, **TypeScript**, **Tailwind CSS v4**, and **Framer Motion**. Designed around a celestial "Deep Space" visual identity, featuring interactive system architecture case studies, hardware-accelerated starfield physics, smooth inertia scrolling, and WCAG 2.1 AA accessibility.
+
+> **Live Demo**: [https://kartik-portfolio.vercel.app](https://kartik-portfolio.vercel.app)
+
+---
+
+## ✨ Features
+
+- **🌠 Celestial Starfield Canvas**: Dynamic dual-pass particle physics engine with device pixel ratio scaling, idle RAF pause on background tabs, and scroll-aware GPU containment.
+- **🛸 Interactive Case Study Modals**: In-depth architectural deep dives for **NovaLabsAI** and **Klickonn** featuring visual system pipeline flow diagrams, bottleneck challenges, production metrics, categorized tooling breakdown, and URL deep-linking (`?project=novalabsai`).
+- **🌊 Inertial Smooth Scrolling**: Powered by [Lenis](https://github.com/darkroomengineering/lenis) for unified momentum scrolling and cross-browser anchor dispatch.
+- **⚡ Core Web Vitals & 60 FPS Locked**: Offscreen layout containment (`content-visibility: auto`), zero-reflow `IntersectionObserver` scroll-spy, GPU compositor transitions, and sub-100ms LCP paint.
+- **📨 Serverless Contact Transmission**: App Router API route (`/api/contact`) with server-side regex validation, honeypot anti-spam trap, and plug-and-play Resend / Webhook forwarding.
+- **📊 Real User Telemetry**: Integrated **Vercel Web Analytics** for privacy-friendly traffic telemetry and **Vercel Speed Insights** for Real User Monitoring (RUM) Core Web Vitals.
+- **♿ WCAG 2.1 AA Compliant**: High-contrast keyboard focus rings, "Skip to main content" bypass block, logical heading hierarchies, and WAI-ARIA focus traps with restoration.
+- **🔍 Comprehensive SEO**: Next.js Metadata Route APIs (`/sitemap.xml`, `/robots.txt`), OpenGraph and Twitter cards, and `schema.org/Person` JSON-LD structured data.
+
+---
+
+## 🛠️ Tech Stack
+
+| Domain | Technologies |
+| :--- | :--- |
+| **Framework** | Next.js 16 (Turbopack, App Router), React 19, TypeScript 5 |
+| **Styling & Tokens** | Tailwind CSS v4 (`@theme`), CSS variables, Glassmorphism HUD |
+| **Motion & Physics** | Framer Motion 13, HTML5 Canvas 2D, Lenis Smooth Scroll |
+| **Icons & Media** | Lucide React |
+| **Testing** | Vitest 5, React Testing Library, JSDOM, `@testing-library/jest-dom` |
+| **Telemetry** | `@vercel/analytics`, `@vercel/speed-insights` |
+| **Deployment** | Vercel Edge Network |
+
+---
+
+## 📁 Feature-Based Architecture
+
+The codebase strictly adheres to **Feature-Based Architecture**, keeping pages thin and encapsulating domain logic:
+
+```
+portfolio/
+├── src/
+│   ├── app/
+│   │   ├── api/contact/route.ts      # Server-side contact validation & dispatch
+│   │   ├── globals.css               # Tailwind v4 @theme design tokens & glass panels
+│   │   ├── layout.tsx                # Fonts, LenisProvider, JSON-LD, Analytics
+│   │   ├── page.tsx                  # Thin routing page composing feature slices
+│   │   ├── robots.ts                 # Dynamic robots metadata route
+│   │   └── sitemap.ts                # Dynamic sitemap metadata route
+│   ├── features/
+│   │   ├── hero/                     # Hero typography, status badge, Starfield canvas
+│   │   ├── projects/                 # Projects grid, ProjectCard, ProjectModal, ArchitectureDiagram
+│   │   ├── skills/                   # Technical category tabs, SkillCard, progress meters
+│   │   ├── about/                    # Career milestones, TimelineNode, narrative bio
+│   │   └── contact/                  # ContactForm, ContactInfoCard, client API service
+│   └── shared/
+│       ├── components/               # Navbar, LenisProvider, Button
+│       ├── constants/                # Site config, SEO constants, JSON-LD schema
+│       └── utils/                    # Lenis smooth scroll dispatch utility
+├── test-preferences.json             # Testing framework configuration
+├── vitest.config.mts                 # Native ESM Vitest test configuration
+└── vitest.setup.ts                   # JSDOM IntersectionObserver & ResizeObserver mocks
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Node.js**: `v20.9.0` or higher
+- **Package Manager**: `npm` (or `pnpm` / `bun`)
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/KaRtIk6969-meow/portfolio.git
+cd portfolio
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure environment variables (Optional)
+
+Copy the example environment file:
+
+```bash
+cp .env.example .env.local
+```
+
+| Variable | Description | Default |
+| :--- | :--- | :--- |
+| `NEXT_PUBLIC_SITE_URL` | Canonical URL for sitemaps & OpenGraph | `https://kartik-portfolio.vercel.app` |
+| `CONTACT_RECEIVER_EMAIL` | Target email for contact form alerts | `kartiksharmaa2066@gmail.com` |
+| `RESEND_API_KEY` | *(Optional)* Resend API Key for live email forwarding | — |
+| `CONTACT_WEBHOOK_URL` | *(Optional)* Slack/Discord webhook URL | — |
+
+### 4. Run development server
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to view the application.
+
+---
+
+## 🧪 Testing
+
+The repository features **39 automated tests** covering API routes, client services, utilities, and components:
+
+```bash
+# Run all tests once
+npm test
+
+# Run tests in interactive watch mode
+npm run test:watch
+```
+
+### Verification Checks
+
+```bash
+# Type check without emitting files
+npx tsc --noEmit
+
+# Run ESLint check
+npm run lint
+
+# Compile production bundle with Turbopack
+npm run build
+```
+
+---
+
+## 🌐 Deploy to Vercel
+
+The easiest way to deploy this portfolio is using the **Vercel Platform**:
+
+1. Push your repository to GitHub.
+2. Import the repository in [Vercel](https://vercel.com/new).
+3. Next.js will be detected automatically. Leave the default build settings (`npm run build`).
+4. (Optional) Add your environment variables (`RESEND_API_KEY`, `CONTACT_WEBHOOK_URL`).
+5. Click **Deploy**.
+
+---
+
+## 👤 Author
+
+**Kartik Sharma**
+- GitHub: [@KaRtIk6969-meow](https://github.com/KaRtIk6969-meow)
+- Live Portfolio: [https://kartik-portfolio.vercel.app](https://kartik-portfolio.vercel.app)
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).

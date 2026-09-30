@@ -28,10 +28,18 @@ export default function Button({
   const ref = useRef<HTMLButtonElement | null>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
+  const rectRef = useRef<DOMRect | null>(null);
+
+  const handleMouseEnter = () => {
+    if (!magnetic || disabled) return;
+    if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) return;
+    if (ref.current) rectRef.current = ref.current.getBoundingClientRect();
+  };
+
   const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!magnetic || !ref.current || disabled) return;
+    if (!magnetic || disabled || !rectRef.current) return;
     const { clientX, clientY } = e;
-    const { left, top, width, height } = ref.current.getBoundingClientRect();
+    const { left, top, width, height } = rectRef.current;
     const x = clientX - (left + width / 2);
     const y = clientY - (top + height / 2);
     setPosition({ x: x * 0.35, y: y * 0.35 });
@@ -39,6 +47,7 @@ export default function Button({
 
   const handleMouseLeave = () => {
     if (magnetic) {
+      rectRef.current = null;
       setPosition({ x: 0, y: 0 });
     }
   };
@@ -72,6 +81,7 @@ export default function Button({
       type={type}
       disabled={disabled}
       onClick={onClick}
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       animate={magnetic ? { x: position.x, y: position.y } : undefined}
