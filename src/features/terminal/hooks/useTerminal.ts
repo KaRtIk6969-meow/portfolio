@@ -10,44 +10,92 @@ import {
   renderTabSuggestions,
 } from "../constants/commands";
 
-export function useTerminal() {
-  const [isOpen, setIsOpen] = useState(false);
+export interface UseTerminalOptions {
+  isOpen?: boolean;
+  onClose?: () => void;
+  onOpen?: () => void;
+}
+
+export function useTerminal(options?: UseTerminalOptions) {
+  const isControlled = typeof options?.isOpen === "boolean";
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
+  const isOpen = isControlled ? Boolean(options?.isOpen) : internalIsOpen;
+
   const [entries, setEntries] = useState<TerminalEntry[]>([INITIAL_GREETING_ENTRY]);
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
   const draftRef = useRef<string>("");
 
-  const openTerminal = useCallback(() => setIsOpen(true), []);
-  const closeTerminal = useCallback(() => setIsOpen(false), []);
-  const toggleTerminal = useCallback(() => setIsOpen((prev) => !prev), []);
+  const openTerminal = useCallback(() => {
+    if (isControlled && options?.onOpen) {
+      options.onOpen();
+    } else {
+      setInternalIsOpen(true);
+    }
+  }, [isControlled, options]);
+
+  const closeTerminal = useCallback(() => {
+    if (isControlled && options?.onClose) {
+      options.onClose();
+    } else {
+      setInternalIsOpen(false);
+    }
+  }, [isControlled, options]);
+
+  const setIsOpen = useCallback(
+    (action: boolean | ((prev: boolean) => boolean)) => {
+      const nextVal = typeof action === "function" ? action(isOpen) : action;
+      if (nextVal) {
+        openTerminal();
+      } else {
+        closeTerminal();
+      }
+    },
+    [isOpen, openTerminal, closeTerminal]
+  );
+
+  const toggleTerminal = useCallback(() => {
+    if (isOpen) {
+      closeTerminal();
+    } else {
+      openTerminal();
+    }
+  }, [isOpen, closeTerminal, openTerminal]);
+
   const clearEntries = useCallback(() => setEntries([]), []);
 
   // Global keyboard shortcut listener (Ctrl+` or Cmd+` to toggle, Escape to close)
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "`") {
+      if (!isControlled && (e.ctrlKey || e.metaKey) && e.key === "`") {
         e.preventDefault();
-        setIsOpen((prev) => !prev);
+        setInternalIsOpen((prev) => !prev);
         return;
       }
 
       if (e.key === "Escape" && isOpen) {
         e.preventDefault();
-        setIsOpen(false);
+        closeTerminal();
       }
     };
 
-    const handleCustomOpen = () => setIsOpen(true);
+    const handleCustomOpen = () => {
+      openTerminal();
+    };
 
     window.addEventListener("keydown", handleGlobalKeyDown);
-    window.addEventListener("cosmos:open-terminal", handleCustomOpen);
+    if (!isControlled) {
+      window.addEventListener("cosmos:open-terminal", handleCustomOpen);
+    }
 
     return () => {
       window.removeEventListener("keydown", handleGlobalKeyDown);
-      window.removeEventListener("cosmos:open-terminal", handleCustomOpen);
+      if (!isControlled) {
+        window.removeEventListener("cosmos:open-terminal", handleCustomOpen);
+      }
     };
-  }, [isOpen]);
+  }, [isOpen, isControlled, closeTerminal, openTerminal]);
 
   // Manage body scroll locking and Lenis pausing
   useEffect(() => {

@@ -20,7 +20,7 @@ export default function Terminal({ isOpen = false, onClose }: TerminalProps) {
     handleCommandSubmit,
     handleKeyDown,
     clearEntries,
-  } = useTerminal();
+  } = useTerminal({ isOpen, onClose });
 
   // Focus input on open
   useEffect(() => {

@@ -137,4 +137,57 @@ describe("useTerminal hook", () => {
 
     expect(result.current.isOpen).toBe(true);
   });
+
+  it("handles controlled mode and invokes onClose when closeTerminal is called", () => {
+    const onClose = vi.fn();
+    const { result } = renderHook(() => useTerminal({ isOpen: true, onClose }));
+
+    expect(result.current.isOpen).toBe(true);
+
+    act(() => {
+      result.current.closeTerminal();
+    });
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("closes on Escape key press when open", () => {
+    const onClose = vi.fn();
+    renderHook(() => useTerminal({ isOpen: true, onClose }));
+
+    act(() => {
+      window.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    });
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("displays suggestions when multiple commands match Tab prefix", () => {
+    const { result } = renderHook(() => useTerminal());
+
+    act(() => {
+      result.current.setInput("c"); // matches "contact" and "clear"
+    });
+
+    act(() => {
+      result.current.handleKeyDown({
+        key: "Tab",
+        preventDefault: vi.fn(),
+      } as unknown as React.KeyboardEvent<HTMLInputElement>);
+    });
+
+    const lastEntry = result.current.entries[result.current.entries.length - 1];
+    expect(lastEntry.id).toContain("tab-suggest");
+  });
+
+  it("ignores whitespace-only command submissions", () => {
+    const { result } = renderHook(() => useTerminal());
+    const initialCount = result.current.entries.length;
+
+    act(() => {
+      result.current.handleCommandSubmit("   ");
+    });
+
+    expect(result.current.entries.length).toBe(initialCount);
+  });
 });

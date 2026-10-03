@@ -74,4 +74,66 @@ describe("Terminal component", () => {
 
     expect(onClose).toHaveBeenCalledTimes(1);
   });
+
+  it("calls onClose when Escape key is pressed", () => {
+    const onClose = vi.fn();
+    render(<Terminal isOpen={true} onClose={onClose} />);
+
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("toggles maximize mode when maximize button is clicked", () => {
+    render(<Terminal isOpen={true} onClose={vi.fn()} />);
+
+    const maxButtons = screen.getAllByRole("button", { name: /Maximize window/i });
+    expect(maxButtons.length).toBeGreaterThanOrEqual(1);
+
+    fireEvent.click(maxButtons[0]);
+    expect(screen.getAllByRole("button", { name: /Restore window/i }).length).toBeGreaterThanOrEqual(1);
+
+    const restoreButtons = screen.getAllByRole("button", { name: /Restore window/i });
+    fireEvent.click(restoreButtons[0]);
+    expect(screen.getAllByRole("button", { name: /Maximize window/i }).length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("executes help, about, skills, projects, contact, date, and echo commands", () => {
+    render(<Terminal isOpen={true} onClose={vi.fn()} />);
+    const input = screen.getByLabelText("Terminal command input");
+
+    // help
+    fireEvent.change(input, { target: { value: "help" } });
+    fireEvent.keyDown(input, { key: "Enter" });
+    expect(screen.getByText("Available Terminal Commands:")).toBeInTheDocument();
+
+    // about
+    fireEvent.change(input, { target: { value: "about" } });
+    fireEvent.keyDown(input, { key: "Enter" });
+    expect(screen.getByText("Milestones:")).toBeInTheDocument();
+
+    // skills
+    fireEvent.change(input, { target: { value: "skills" } });
+    fireEvent.keyDown(input, { key: "Enter" });
+    expect(screen.getByText("Frontend Stack:")).toBeInTheDocument();
+
+    // projects
+    fireEvent.change(input, { target: { value: "projects" } });
+    fireEvent.keyDown(input, { key: "Enter" });
+    expect(screen.getByText("Selected Works:")).toBeInTheDocument();
+
+    // contact
+    fireEvent.change(input, { target: { value: "contact" } });
+    fireEvent.keyDown(input, { key: "Enter" });
+    expect(screen.getByText("Communication Channels:")).toBeInTheDocument();
+
+    // date
+    fireEvent.change(input, { target: { value: "date" } });
+    fireEvent.keyDown(input, { key: "Enter" });
+    expect(screen.getByText(/UTC:/)).toBeInTheDocument();
+
+    // echo
+    fireEvent.change(input, { target: { value: "echo Deep Space Telemetry" } });
+    fireEvent.keyDown(input, { key: "Enter" });
+    expect(screen.getByText("Deep Space Telemetry")).toBeInTheDocument();
+  });
 });

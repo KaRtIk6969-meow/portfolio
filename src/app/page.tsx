@@ -8,9 +8,15 @@ import Skills from "@/features/skills/ui/Skills";
 import About from "@/features/about/ui/About";
 import Contact from "@/features/contact/ui/Contact";
 import { CommandPalette, useCommandPalette } from "@/features/command-palette";
-import { Terminal, useTerminal } from "@/features/terminal";
+import { useTerminal } from "@/features/terminal";
 import { smoothScrollTo } from "@/shared/utils/scroll";
 import { ArrowUp } from "lucide-react";
+import dynamic from "next/dynamic";
+
+const Terminal = dynamic(
+  () => import("@/features/terminal").then((mod) => mod.Terminal),
+  { ssr: false }
+);
 
 export default function Home() {
   const {
@@ -43,7 +49,7 @@ export default function Home() {
 
 
       {/* Main page layout containers flow */}
-      <main className="relative z-10 flex flex-col w-full min-w-0">
+      <main id="main-content" className="relative z-10 flex flex-col w-full min-w-0">
         <Hero />
         <Projects />
         <Skills />
